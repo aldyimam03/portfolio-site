@@ -50,6 +50,13 @@ const iconDefinitions: Record<string, IconDefinition> = {
   backend: { color: '#FBBF24', glyph: '{}' },
   database: { color: '#60A5FA', glyph: 'DB' },
   toolspractices: { color: '#A78BFA', glyph: '⚒' },
+  ai: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
+  aiautomation: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
+  aiassisteddevelopment: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
+  promptengineering: { color: '#A78BFA', glyph: 'P' },
+  llmapiintegration: { color: '#38BDF8', glyph: 'LLM' },
+  aiworkflowautomation: { color: '#34D399', glyph: '↗' },
+  automationworkflow: { color: '#34D399', glyph: '↗' },
 }
 
 function normalize(value: string) {

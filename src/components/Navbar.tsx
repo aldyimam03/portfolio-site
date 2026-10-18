@@ -9,10 +9,12 @@ const links = [
 ]
 
 interface NavbarProps {
+  theme: 'dark' | 'light'
+  onToggleTheme: () => void
   onOpenPalette: () => void
 }
 
-export default function Navbar({ onOpenPalette }: NavbarProps) {
+export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('beranda')
@@ -85,6 +87,27 @@ export default function Navbar({ onOpenPalette }: NavbarProps) {
         </ul>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            aria-label={theme === 'dark' ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
+            title={theme === 'dark' ? 'Mode terang' : 'Mode gelap'}
+            aria-pressed={theme === 'light'}
+            className="flex h-10 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white sm:px-3"
+          >
+            {theme === 'dark' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.7 6.7 0 0 0 9.8 9.8Z" />
+              </svg>
+            )}
+            <span className="hidden text-xs font-medium sm:inline">{theme === 'dark' ? 'Terang' : 'Gelap'}</span>
+          </button>
+
           <button
             type="button"
             onClick={onOpenPalette}

@@ -12,6 +12,7 @@ const techStrip = [
   'PostgreSQL',
   'Redis',
   'Docker',
+  'AI',
 ]
 
 const fullText = 'OPEN TO WORK....'
@@ -62,15 +63,11 @@ export default function Hero() {
       {/* Background glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(60% 50% at 70% 20%, rgba(99,102,241,0.18) 0%, transparent 60%), radial-gradient(50% 40% at 20% 30%, rgba(56,189,248,0.12) 0%, transparent 60%)',
-        }}
+        className="hero-glow pointer-events-none absolute inset-0"
       />
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-6 py-32 lg:grid-cols-[1fr_320px]">
-        <div className="animate-fade-up max-w-2xl">
+      <div className="relative mx-auto grid min-w-0 w-full max-w-6xl items-center gap-12 px-6 py-32 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="animate-fade-up min-w-0 w-full max-w-2xl">
           <p className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 font-mono text-xs text-slate-400 backdrop-blur-xs">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
