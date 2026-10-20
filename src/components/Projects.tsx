@@ -93,7 +93,7 @@ export default function Projects() {
                 <TechBadge key={tech} name={tech} />
               ))}
               {project.tech.length > 5 && (
-                <span className="rounded bg-white/5 px-2 py-0.5 font-mono text-[11px] text-slate-500">
+                <span className="rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[11px] text-slate-500">
                   +{project.tech.length - 5}
                 </span>
               )}

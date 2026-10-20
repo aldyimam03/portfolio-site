@@ -81,7 +81,7 @@ export default function Hero() {
 
           <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
             Halo, saya{' '}
-            <span className="bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="hero-name bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">
               Aldy Imam Wijaya
             </span>
           </h1>
@@ -103,6 +103,13 @@ export default function Hero() {
             >
               Hubungi Saya
             </a>
+            <a
+              href="/cv-aldy-imam-wijaya.pdf"
+              download="Aldy-Imam-Wijaya-CV.pdf"
+              className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-6 py-3 text-sm font-semibold text-emerald-300 transition hover:border-emerald-300/50 hover:bg-emerald-400/20"
+            >
+              Download CV
+            </a>
           </div>
 
           {/* Auto-scrolling tech strip — single line, smooth marquee with fade mask */}
@@ -118,9 +125,9 @@ export default function Hero() {
         <div className="animate-fade-up relative mx-auto w-full max-w-[270px] [animation-delay:100ms] lg:max-w-none">
           <div
             aria-hidden
-            className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-indigo-500/40 via-sky-500/10 to-emerald-400/30 blur-2xl"
+            className="photo-halo absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-indigo-500/40 via-sky-500/10 to-emerald-400/30 blur-2xl"
           />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-slate-900 p-2 shadow-2xl shadow-indigo-950/60">
+          <div className="photo-frame relative overflow-hidden rounded-[2rem] border border-white/15 bg-slate-900 p-2 shadow-2xl shadow-indigo-950/60">
             <img
               src="/me-001.png"
               alt="Foto profil Aldy Imam Wijaya"

@@ -91,6 +91,23 @@ export default function Contact() {
                 </span>
               </a>
             ))}
+            <a
+              href="/cv-aldy-imam-wijaya.pdf"
+              download="Aldy-Imam-Wijaya-CV.pdf"
+              className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-indigo-500/40 hover:bg-white/[0.06]"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-300 transition group-hover:bg-indigo-500/25">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 3v12" />
+                  <path d="m7 10 5 5 5-5" />
+                  <path d="M5 21h14" />
+                </svg>
+              </span>
+              <span>
+                <span className="block font-mono text-[11px] uppercase tracking-wider text-slate-500">CV</span>
+                <span className="block text-sm font-medium text-slate-200 group-hover:text-white">Download CV</span>
+              </span>
+            </a>
             <button
               type="button"
               onClick={copyEmail}

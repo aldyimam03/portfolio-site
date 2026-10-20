@@ -46,13 +46,15 @@ const iconDefinitions: Record<string, IconDefinition> = {
   jwtauthentication: { src: 'https://cdn.simpleicons.org/jsonwebtokens/FFFFFF', color: '#FFFFFF', glyph: 'JWT' },
   gitgithub: { src: 'https://cdn.simpleicons.org/github/FFFFFF', color: '#FFFFFF', glyph: 'GH' },
   agile: { color: '#34D399', glyph: '↗' },
-  frontend: { color: '#F472B6', glyph: '</>' },
+  frontend: { color: '#E0724E', glyph: '</>' },
   backend: { color: '#FBBF24', glyph: '{}' },
-  database: { color: '#60A5FA', glyph: 'DB' },
-  toolspractices: { color: '#A78BFA', glyph: '⚒' },
-  ai: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
-  aiautomation: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
-  aiassisteddevelopment: { src: 'https://cdn.simpleicons.org/openai/10A37F', color: '#10A37F', glyph: 'AI' },
+  database: { src: 'https://cdn.simpleicons.org/mysql/4479A1', color: '#4479A1', glyph: 'DB' },
+  tools: { src: 'https://cdn.simpleicons.org/git/F05032', color: '#F05032', glyph: '⚒' },
+  toolspractices: { src: 'https://cdn.simpleicons.org/git/F05032', color: '#F05032', glyph: '⚒' },
+  ai: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
+  aiassisted: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
+  aiautomation: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
+  aiassisteddevelopment: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
   promptengineering: { color: '#A78BFA', glyph: 'P' },
   llmapiintegration: { color: '#38BDF8', glyph: 'LLM' },
   aiworkflowautomation: { color: '#34D399', glyph: '↗' },
@@ -113,7 +115,7 @@ export function TechIcon({ name, size = 16, className = '' }: TechIconProps) {
 
 export function TechBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded bg-white/5 px-2 py-0.5 font-mono text-[11px] text-slate-300">
+    <span className="inline-flex items-center gap-1.5 rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[11px] text-slate-300">
       <TechIcon name={name} size={14} />
       {name}
     </span>

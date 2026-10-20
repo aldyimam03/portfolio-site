@@ -6,6 +6,7 @@ const commands = [
   { id: 'keahlian', label: 'Lihat Keahlian', hint: 'Skills', keywords: 'skills keahlian teknologi stack', icon: '02' },
   { id: 'proyek', label: 'Jelajahi Proyek', hint: 'Projects', keywords: 'projects proyek portfolio karya', icon: '03' },
   { id: 'kontak', label: 'Hubungi Saya', hint: 'Contact', keywords: 'contact kontak email hubungi', icon: '04' },
+  { id: 'cv', label: 'Download CV', hint: 'Resume', keywords: 'cv resume curriculum vitae download unduh', icon: '↓' },
 ]
 
 interface CommandPaletteProps {
@@ -57,6 +58,13 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
 
   const goTo = (id: string) => {
     changeOpen(false)
+    if (id === 'cv') {
+      const link = document.createElement('a')
+      link.href = '/cv-aldy-imam-wijaya.pdf'
+      link.download = 'Aldy-Imam-Wijaya-CV.pdf'
+      link.click()
+      return
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 

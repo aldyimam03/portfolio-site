@@ -19,14 +19,13 @@ const skillGroups = [
     items: ['MySQL', 'PostgreSQL', 'SQLite', 'Sequelize ORM', 'Redis'],
   },
   {
-    title: 'AI & Automation',
-    icon: 'AI & Automation',
-    note: 'Memakai AI untuk mempercepat eksplorasi, integrasi, dan otomasi workflow.',
+    title: 'AI Assisted',
+    icon: 'AI Assisted',
     items: ['AI-Assisted Development', 'Prompt Engineering', 'LLM API Integration', 'AI Workflow Automation'],
   },
   {
-    title: 'Tools & Practices',
-    icon: 'Tools & Practices',
+    title: 'Tools',
+    icon: 'Tools',
     items: ['Git & GitHub', 'Docker', 'Jest', 'Joi', 'Agile Method'],
   },
 ]
@@ -41,20 +40,17 @@ export default function Skills() {
           <Reveal key={group.title} delay={index * 80}>
             <div
               className={`h-full rounded-xl border bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:bg-white/[0.06] ${
-                group.title === 'AI & Automation'
+                group.title === 'AI Assisted'
                   ? 'border-emerald-400/30 shadow-lg shadow-emerald-950/10 hover:border-emerald-400/55'
                   : 'border-white/10 hover:border-indigo-500/40'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                   <TechIcon name={group.icon} size={19} />
                 </span>
                 <h3 className="font-semibold text-white">{group.title}</h3>
               </div>
-              {'note' in group && group.note && (
-                <p className="mt-3 text-xs leading-relaxed text-slate-400">{group.note}</p>
-              )}
               <ul className="mt-4 space-y-2">
                 {group.items.map((item) => (
                   <li key={item}>
