@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { projects, categoryLabel, type Project, type ProjectCategory } from '../data/projects'
 import Reveal from './Reveal'
 import SectionHeading from './SectionHeading'
@@ -103,7 +103,7 @@ export default function Projects() {
               <button
                 type="button"
                 onClick={() => setActive(project)}
-                className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 transition group-hover:gap-3 hover:text-indigo-300"
+                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-medium text-indigo-400 transition group-hover:gap-3 hover:text-indigo-300"
               >
                 Detail proyek
                 <span aria-hidden>→</span>
@@ -127,7 +127,7 @@ export default function Projects() {
                   className="inline-flex items-center gap-1.5 text-sm text-slate-400 transition hover:text-white"
                   aria-label={`Buka repositori ${project.title}`}
                 >
-                  <TechBadge name="Git & GitHub" />
+                  <TechBadge name="GitHub" />
                 </a>
               )}
               </div>
@@ -150,13 +150,37 @@ export default function Projects() {
 }
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
+    const previousFocus = document.activeElement as HTMLElement | null
+    const previousOverflow = document.body.style.overflow
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (event.key !== 'Tab' || !modalRef.current) return
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+      document.body.style.overflow = previousOverflow
+      previousFocus?.focus()
     }
   }, [onClose])
 
@@ -164,25 +188,27 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={project.title}
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6"
+      aria-labelledby="project-modal-title"
+      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-4 pb-8 pt-24 sm:px-6 sm:pt-24"
     >
       <button
         type="button"
         aria-label="Tutup detail proyek"
         onClick={onClose}
-        className="absolute inset-0 cursor-default bg-slate-950/80 backdrop-blur-sm"
+        tabIndex={-1}
+        className="project-modal-overlay fixed inset-0 z-0 cursor-default bg-slate-950/80 backdrop-blur-sm"
       />
 
-      <div className="animate-fade-up relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl sm:p-8">
+      <div ref={modalRef} role="document" className="project-modal animate-fade-up relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-2xl sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
             <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-indigo-300">
               {categoryLabel[project.category]}
             </span>
-            <h3 className="mt-3 text-2xl font-bold text-white">{project.title}</h3>
+            <h3 id="project-modal-title" className="mt-3 text-2xl font-bold text-white">{project.title}</h3>
           </div>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Tutup"
@@ -211,12 +237,12 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
         <div className="mt-6 flex flex-wrap gap-3">
           {project.demo && (
-            <a href={project.demo} target="_blank" rel="noreferrer" className="rounded-lg bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-400">
+            <a href={project.demo} target="_blank" rel="noreferrer" className="rounded-lg border border-indigo-500/20 bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition hover:bg-indigo-400">
               Lihat Demo ↗
             </a>
           )}
           {project.repo && (
-            <a href={project.repo} target="_blank" rel="noreferrer" className="rounded-lg border border-white/15 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-white/30 hover:bg-white/5">
+            <a href={project.repo} target="_blank" rel="noreferrer" className="rounded-lg border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-white/30 hover:bg-white/10">
               Kode Sumber ↗
             </a>
           )}

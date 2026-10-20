@@ -27,9 +27,9 @@ const iconDefinitions: Record<string, IconDefinition> = {
   bootstrap: { src: 'https://cdn.simpleicons.org/bootstrap/7952B3', color: '#C4B5FD', glyph: 'B' },
   scss: { src: 'https://cdn.simpleicons.org/sass/CC6699', color: '#F0A6CA', glyph: 'SCSS' },
   nodejs: { src: 'https://cdn.simpleicons.org/nodedotjs/339933', color: '#83CD29', glyph: 'JS' },
-  expressjs: { src: 'https://cdn.simpleicons.org/express/FFFFFF', color: '#FFFFFF', glyph: 'Ex' },
+  expressjs: { src: 'https://cdn.simpleicons.org/express/D97757', color: '#D97757', glyph: 'Ex' },
   mysql: { src: 'https://cdn.simpleicons.org/mysql/4479A1', color: '#4479A1', glyph: 'SQL' },
-  jwt: { src: 'https://cdn.simpleicons.org/jsonwebtokens/FFFFFF', color: '#FFFFFF', glyph: 'JWT' },
+  jwt: { src: 'https://cdn.simpleicons.org/jsonwebtokens/D97757', color: '#D97757', glyph: 'JWT' },
   joi: { src: 'https://cdn.simpleicons.org/joi/6B5B95', color: '#BBA7E3', glyph: 'J' },
   helmet: { color: '#F5C542', glyph: 'H' },
   bcryptjs: { color: '#8B5CF6', glyph: 'B' },
@@ -43,8 +43,9 @@ const iconDefinitions: Record<string, IconDefinition> = {
   vite: { src: 'https://cdn.simpleicons.org/vite/646CFF', color: '#A78BFA', glyph: 'V' },
   htmlcss: { src: 'https://cdn.simpleicons.org/html5/E34F26', color: '#E34F26', glyph: '</>' },
   restapidesign: { color: '#38BDF8', glyph: 'API' },
-  jwtauthentication: { src: 'https://cdn.simpleicons.org/jsonwebtokens/FFFFFF', color: '#FFFFFF', glyph: 'JWT' },
-  gitgithub: { src: 'https://cdn.simpleicons.org/github/FFFFFF', color: '#FFFFFF', glyph: 'GH' },
+  jwtauthentication: { src: 'https://cdn.simpleicons.org/jsonwebtokens/D97757', color: '#D97757', glyph: 'JWT' },
+  github: { src: 'https://cdn.simpleicons.org/github/181717', color: '#51463B', glyph: 'GH' },
+  gitgithub: { src: 'https://cdn.simpleicons.org/github/181717', color: '#51463B', glyph: 'GH' },
   agile: { color: '#34D399', glyph: '↗' },
   frontend: { color: '#E0724E', glyph: '</>' },
   backend: { color: '#FBBF24', glyph: '{}' },
@@ -99,6 +100,7 @@ export function TechIcon({ name, size = 16, className = '' }: TechIconProps) {
           height={size}
           loading="lazy"
           onError={() => setFailed(true)}
+          referrerPolicy="no-referrer"
           className="h-full w-full object-contain"
         />
       ) : (

@@ -131,6 +131,9 @@ export default function Hero() {
             <img
               src="/me-001.png"
               alt="Foto profil Aldy Imam Wijaya"
+              fetchPriority="high"
+              width={540}
+              height={607}
               className="aspect-[0.89] w-full rounded-[1.5rem] bg-white object-cover object-top"
             />
           </div>

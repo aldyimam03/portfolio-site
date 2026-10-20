@@ -27,6 +27,15 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
   }, [])
 
   useEffect(() => {
+    if (!open) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
+
+  useEffect(() => {
     const sections = links
       .map(({ id }) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section))
@@ -138,6 +147,7 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
             type="button"
             aria-label={open ? 'Tutup menu' : 'Buka menu'}
             aria-expanded={open}
+            aria-controls="mobile-navigation"
             onClick={() => setOpen((value) => !value)}
             className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-300 transition hover:bg-white/5 md:hidden"
           >
@@ -149,7 +159,7 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
       </nav>
 
       {open && (
-        <div className="border-b border-white/5 bg-slate-950/95 backdrop-blur md:hidden">
+        <div id="mobile-navigation" className="border-b border-white/5 bg-slate-950/95 backdrop-blur md:hidden">
           <ul className="flex flex-col px-6 py-2">
             {links.map((link) => (
               <li key={link.id}>

@@ -255,6 +255,7 @@ body {
 :root[data-theme='light'] [class~='hover:bg-indigo-500/10']:hover {
   background-color: rgba(180, 83, 9, 0.1) !important;
 }
+:root[data-theme='light'] [class~='border-indigo-500/20'],
 :root[data-theme='light'] [class~='hover:border-indigo-500/40']:hover,
 :root[data-theme='light'] [class~='hover:border-indigo-400/50']:hover,
 :root[data-theme='light'] [class~='hover:border-indigo-400/60']:hover {
@@ -288,6 +289,21 @@ body {
   border-color: rgba(120, 82, 45, 0.28) !important;
   box-shadow: 0 25px 50px -12px rgba(120, 82, 45, 0.3) !important;
 }
+:root[data-theme='light'] .project-modal {
+  background-color: #fffaf2 !important;
+  border-color: rgba(120, 82, 45, 0.2) !important;
+  box-shadow: 0 25px 50px -12px rgba(120, 82, 45, 0.28) !important;
+}
+
+.project-modal {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.project-modal::-webkit-scrollbar {
+  display: none;
+}
+
 :root[data-theme='light'] .site-background,
 :root[data-theme='light'] .hero-glow {
   mix-blend-mode: multiply;
