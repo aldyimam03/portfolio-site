@@ -75,16 +75,23 @@ python scripts/gen-favicons.py     # favicon.ico, apple-touch-icon, ikon PWA
 
 Keduanya hanya perlu dijalankan bila ingin memperbarui aset, bukan saat build.
 
-## Deploy
+## Deploy (Vercel)
 
-Build memakai `base: './'`, jadi hasil `dist/` bisa diletakkan di root domain maupun subpath (mis. GitHub Pages `/<repo>/`).
+Situs ini dideploy ke Vercel: **https://portfolio-site-theta-gilt.vercel.app/**
 
-GitHub Pages:
+- Framework terdeteksi sebagai Vite; `vercel.json` mematok `buildCommand` dan `outputDirectory` agar konsisten.
+- Push ke `main` memicu deploy produksi; branch lain menjadi preview deployment.
+- Aset `/assets/*` di-cache permanen (nama file ber-hash), gambar publik di-cache 1 hari.
 
-1. `npm run build`
-2. Push isi `dist/` ke branch `gh-pages`, atau gunakan action `actions/deploy-pages` dengan `dist` sebagai artifact.
+Deploy manual:
 
-Bila pindah domain, perbarui URL absolut di `index.html` (`og:url`, `og:image`, `twitter:image`, JSON-LD) serta `public/robots.txt` dan `public/sitemap.xml`.
+```bash
+npm i -g vercel
+vercel        # preview
+vercel --prod # produksi
+```
+
+Bila domain berubah, perbarui URL absolut di `index.html` (`og:url`, `og:image`, `twitter:image`, JSON-LD), `public/robots.txt`, dan `public/sitemap.xml`.
 
 ## Teknologi
 
