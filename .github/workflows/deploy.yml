@@ -1,0 +1,76 @@
+name: Deploy (Vercel)
+
+# Deploy produksi dari GitHub Actions, hanya setelah workflow CI hijau.
+# Tanpa secret VERCEL_TOKEN, job ini sengaja tidak melakukan apa-apa:
+# deploy tetap ditangani integrasi Git Vercel (push ke main -> produksi,
+# branch/PR -> preview deployment).
+#
+# Cara mengaktifkan:
+#   1. Buat token di https://vercel.com/account/tokens
+#   2. Repo > Settings > Secrets and variables > Actions, tambahkan:
+#      VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+#      (org/project id ada di .vercel/project.json)
+#   3. Matikan auto-deploy Git di dashboard Vercel agar tidak dobel deploy.
+
+on:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy production
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Cek ketersediaan token
+        id: gate
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::VERCEL_TOKEN belum diisi — deploy tetap ditangani integrasi Git Vercel."
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup Node
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.gate.outputs.ready == 'true'
+        run: npm ci
+
+      - name: Tarik konfigurasi proyek Vercel
+        if: steps.gate.outputs.ready == 'true'
+        run: npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build dengan konfigurasi Vercel
+        if: steps.gate.outputs.ready == 'true'
+        run: npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy ke produksi
+        if: steps.gate.outputs.ready == 'true'
+        run: npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"

@@ -2,6 +2,9 @@
 
 Portfolio personal Aldy Imam Wijaya, Full-Stack Web Developer. Dibangun dengan React 19, TypeScript, Vite, dan Tailwind CSS v4.
 
+[![CI](https://github.com/aldyimam03/portfolio-site/actions/workflows/ci.yml/badge.svg)](https://github.com/aldyimam03/portfolio-site/actions/workflows/ci.yml)
+[![Deploy](https://github.com/aldyimam03/portfolio-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/aldyimam03/portfolio-site/actions/workflows/deploy.yml)
+
 ## Fitur
 
 - Satu halaman dengan navigasi anchor (Beranda, Tentang, Keahlian, Proyek, Kontak)
@@ -92,6 +95,26 @@ vercel --prod # produksi
 ```
 
 Bila domain berubah, perbarui URL absolut di `index.html` (`og:url`, `og:image`, `twitter:image`, JSON-LD), `public/robots.txt`, dan `public/sitemap.xml`.
+
+## CI/CD
+
+| Lapis                          | Pemicu                                  | Yang dikerjakan                                                    |
+| ------------------------------ | --------------------------------------- | ------------------------------------------------------------------ |
+| `.github/workflows/ci.yml`     | push & pull request                     | lint → format:check → build → unggah artifact `dist`               |
+| `.github/workflows/deploy.yml` | setelah CI hijau di `main`, atau manual | `vercel pull` → `vercel build` → `vercel deploy --prebuilt --prod` |
+| Integrasi Git Vercel           | push ke `main` / pull request           | deploy produksi atau preview otomatis + status check di PR         |
+
+Deploy lewat Actions hanya aktif bila secret `VERCEL_TOKEN`, `VERCEL_ORG_ID`, dan
+`VERCEL_PROJECT_ID` tersedia (nilai org/project ada di `.vercel/project.json`).
+Tanpa secret tersebut job dilewati dan deploy tetap ditangani integrasi Git
+Vercel. Kalau deploy Actions diaktifkan, matikan auto-deploy Git di dashboard
+Vercel supaya tidak ada dua deploy per push.
+
+`vercel.json` mengatur beberapa hal sekaligus:
+
+- `ignoreCommand` — Vercel melewati build bila push hanya menyentuh `*.md` atau `.github/`.
+- `github.autoJobCancelation` — deploy lama dibatalkan saat ada push baru.
+- header keamanan dan aturan cache untuk `/assets/*` serta aset gambar/CV.
 
 ## Teknologi
 
