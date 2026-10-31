@@ -1,425 +1,271 @@
 @import 'tailwindcss';
 
+/*
+ * Sistem desain "dokumen kerja".
+ * Arah lengkap ada di DESIGN.md. Tiga warna inti (kertas, tinta, aksen) dengan
+ * netral yang diturunkan dari tinta. Komponen tidak menulis warna hex: semua
+ * lewat token di bawah, jadi tema berganti hanya dengan menimpa variabel.
+ */
+
 @theme {
-  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Newsreader Variable', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-/*
- * Token semantik.
- * `@theme inline` membuat utility Tailwind (bg-surface, text-muted, …) menunjuk
- * langsung ke variabel CSS, sehingga tema berganti saat runtime hanya dengan
- * menimpa nilai variabel di [data-theme]. Tidak ada lagi override
- * `!important` per utility seperti sebelumnya.
- */
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface-faint: var(--surface-faint);
-  --color-surface: var(--surface);
-  --color-surface-soft: var(--surface-soft);
-  --color-surface-strong: var(--surface-strong);
-  --color-hairline-soft: var(--hairline-soft);
-  --color-hairline: var(--hairline);
-  --color-hairline-strong: var(--hairline-strong);
-  --color-hairline-hover: var(--hairline-hover);
+  --color-paper: var(--paper);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-panel: var(--panel);
   --color-ink: var(--ink);
-  --color-body: var(--body);
-  --color-soft: var(--soft);
-  --color-muted: var(--muted);
-  --color-faint: var(--faint);
-  --color-ghost: var(--ghost);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
-  --color-accent-solid: var(--accent-solid);
-  --color-accent-solid-hover: var(--accent-solid-hover);
-  --color-accent-soft: var(--accent-soft);
-  --color-accent-soft-hover: var(--accent-soft-hover);
-  --color-accent-line: var(--accent-line);
+  --color-accent-wash: var(--accent-wash);
   --color-on-accent: var(--on-accent);
-  --color-mint: var(--mint);
-  --color-mint-soft: var(--mint-soft);
-  --color-panel: var(--panel);
-  --color-nav: var(--nav);
-  --color-nav-strong: var(--nav-strong);
   --color-overlay: var(--overlay);
-  --color-photo-bg: var(--photo-bg);
-  --color-deep: var(--deep);
 }
 
-/* ---------- Tema gelap (default) ---------- */
+/* ---------- Tema kertas (default) ---------- */
 :root {
-  color-scheme: dark;
-
-  --bg: #020617;
-  --surface-faint: rgba(255, 255, 255, 0.02);
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-soft: rgba(255, 255, 255, 0.05);
-  --surface-strong: rgba(255, 255, 255, 0.06);
-
-  --hairline-soft: rgba(255, 255, 255, 0.05);
-  --hairline: rgba(255, 255, 255, 0.1);
-  --hairline-strong: rgba(255, 255, 255, 0.15);
-  --hairline-hover: rgba(255, 255, 255, 0.3);
-
-  --ink: #ffffff;
-  --body: #e2e8f0;
-  --soft: #cbd5e1;
-  --muted: #94a3b8;
-  --faint: #64748b;
-  --ghost: #475569;
-
-  --accent: #818cf8;
-  --accent-strong: #a5b4fc;
-  --accent-solid: #6366f1;
-  --accent-solid-hover: #818cf8;
-  --accent-soft: rgba(99, 102, 241, 0.15);
-  --accent-soft-hover: rgba(99, 102, 241, 0.25);
-  --accent-line: rgba(99, 102, 241, 0.4);
-  --on-accent: #ffffff;
-  --mint: #34d399;
-  --mint-soft: #6ee7b7;
-
-  --panel: #0f172a;
-  --nav: rgba(2, 6, 23, 0.85);
-  --nav-strong: rgba(2, 6, 23, 0.95);
-  --overlay: rgba(2, 6, 23, 0.8);
-  --photo-bg: #ffffff;
-  --deep: #020617;
-
-  --gradient-brand: linear-gradient(to right, #818cf8, #38bdf8, #34d399);
-  --gradient-halo: linear-gradient(
-    to bottom right,
-    rgba(99, 102, 241, 0.4),
-    rgba(14, 165, 233, 0.1),
-    rgba(16, 185, 129, 0.3)
-  );
-
-  --hero-glow:
-    radial-gradient(60% 50% at 70% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
-    radial-gradient(50% 40% at 20% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 60%);
-
-  --page-backdrop:
-    radial-gradient(circle at 14% 18%, rgba(99, 102, 241, 0.18), transparent 28%),
-    radial-gradient(circle at 86% 12%, rgba(14, 165, 233, 0.13), transparent 25%),
-    radial-gradient(circle at 72% 82%, rgba(16, 185, 129, 0.1), transparent 24%),
-    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.11) 1px, transparent 1.2px);
-
-  --blob-1: rgba(99, 102, 241, 0.42);
-  --blob-2: rgba(14, 165, 233, 0.34);
-
-  --selection-bg: rgba(99, 102, 241, 0.4);
-  --selection-ink: #ffffff;
-
-  --scroll-track: #020617;
-  --scroll-thumb: #334155;
-  --scroll-thumb-hover: #475569;
-}
-
-/* ---------- Tema terang (hangat) ---------- */
-:root[data-theme='light'] {
   color-scheme: light;
 
-  --bg: #f4ede3;
-  --surface-faint: rgba(255, 250, 242, 0.55);
-  --surface: rgba(255, 250, 242, 0.7);
-  --surface-soft: rgba(120, 82, 45, 0.06);
-  --surface-strong: rgba(255, 250, 242, 0.94);
+  --paper: #f4ede3;
+  --paper-sunk: #efe6d8;
+  --panel: #fbf6ed;
 
-  --hairline-soft: rgba(120, 82, 45, 0.14);
-  --hairline: rgba(120, 82, 45, 0.2);
-  --hairline-strong: rgba(120, 82, 45, 0.28);
-  --hairline-hover: rgba(120, 82, 45, 0.42);
+  --ink: #241d17;
+  --ink-soft: #4b4038;
+  --ink-muted: #6a5b4c;
+  --ink-faint: #756552;
 
-  --ink: #3f3025;
-  --body: #514238;
-  --soft: #665548;
-  --muted: #786657;
-  --faint: #8b7766;
-  --ghost: #a18b78;
+  --rule: rgba(36, 29, 23, 0.15);
+  --rule-strong: rgba(36, 29, 23, 0.32);
 
-  --accent: #9a3412;
-  --accent-strong: #b45309;
-  --accent-solid: #b45309;
-  --accent-solid-hover: #d97706;
-  --accent-soft: rgba(180, 83, 9, 0.12);
-  --accent-soft-hover: rgba(180, 83, 9, 0.2);
-  --accent-line: rgba(180, 83, 9, 0.42);
-  --on-accent: #fffaf2;
-  --mint: #a16207;
-  --mint-soft: #a16207;
+  --accent: #a8412a;
+  --accent-strong: #8c3520;
+  --accent-wash: rgba(168, 65, 42, 0.09);
+  --on-accent: #fdf8f0;
 
-  --panel: #fffaf2;
-  --nav: rgba(255, 250, 242, 0.9);
-  --nav-strong: rgba(255, 250, 242, 0.95);
-  --overlay: rgba(63, 48, 37, 0.45);
-  --photo-bg: #fffaf2;
-  --deep: #78522d;
-
-  --gradient-brand: linear-gradient(to right, #9a3412, #b45309, #a16207);
-  --gradient-halo: linear-gradient(
-    to bottom right,
-    rgba(180, 83, 9, 0.42),
-    rgba(217, 119, 6, 0.18),
-    rgba(161, 98, 7, 0.32)
-  );
-
-  --hero-glow:
-    radial-gradient(60% 50% at 70% 20%, rgba(217, 119, 6, 0.16) 0%, transparent 60%),
-    radial-gradient(50% 40% at 20% 30%, rgba(180, 83, 9, 0.12) 0%, transparent 60%);
-
-  --page-backdrop:
-    radial-gradient(circle at 12% 16%, rgba(180, 83, 9, 0.13), transparent 27%),
-    radial-gradient(circle at 88% 10%, rgba(217, 119, 6, 0.11), transparent 24%),
-    radial-gradient(circle at 72% 82%, rgba(190, 124, 62, 0.1), transparent 24%),
-    linear-gradient(rgba(120, 82, 45, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120, 82, 45, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 1px 1px, rgba(120, 82, 45, 0.1) 1px, transparent 1.2px);
-
-  --blob-1: rgba(180, 83, 9, 0.22);
-  --blob-2: rgba(217, 119, 6, 0.18);
-
-  --selection-bg: rgba(180, 83, 9, 0.28);
-  --selection-ink: #3f3025;
-
-  --scroll-track: #f4ede3;
-  --scroll-thumb: #c4a98c;
-  --scroll-thumb-hover: #a98563;
+  --overlay: rgba(36, 29, 23, 0.55);
+  --selection: rgba(168, 65, 42, 0.22);
 }
 
-/* ---------- Dasar ---------- */
-html {
-  scroll-behavior: smooth;
-  background: var(--bg);
+/* ---------- Tema lampu (gelap) ---------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #16110d;
+  --paper-sunk: #1e1813;
+  --panel: #1d1712;
+
+  --ink: #f2e9dc;
+  --ink-soft: #d3c6b6;
+  --ink-muted: #ab9c8b;
+  --ink-faint: #94867a;
+
+  --rule: rgba(242, 233, 220, 0.14);
+  --rule-strong: rgba(242, 233, 220, 0.28);
+
+  --accent: #ef8f72;
+  --accent-strong: #f5a68e;
+  --accent-wash: rgba(239, 143, 114, 0.12);
+  --on-accent: #20140f;
+
+  --overlay: rgba(8, 5, 3, 0.68);
+  --selection: rgba(239, 143, 114, 0.26);
 }
 
-body {
-  @apply antialiased;
-  margin: 0;
-  background: var(--bg);
-  color: var(--body);
-  font-family: var(--font-sans);
-  transition:
-    background-color 250ms ease,
-    color 250ms ease;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.011em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  /* R-39: kontrol yang bisa dipakai harus terlihat bisa dipakai. */
+  :where(a[href], button, summary, label[for], select, input[type='checkbox'], input[type='radio']) {
+    cursor: pointer;
+  }
+
+  :where([disabled], [aria-disabled='true']) {
+    cursor: not-allowed;
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  #konten:focus {
+    outline: none;
+  }
 }
 
-.site-shell,
-#root {
-  background: transparent !important;
-  color: var(--body);
-  transition: color 250ms ease;
-}
-
-/* ---------- Fokus & lompat ke konten ---------- */
+/* ---------- Lompat ke konten ---------- */
 .skip-link {
   position: fixed;
   top: 0.75rem;
   left: 0.75rem;
   z-index: 100;
-  padding: 0.6rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--accent-line);
-  background: var(--panel);
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  background-color: var(--panel);
   color: var(--ink);
   font-size: 0.875rem;
-  font-weight: 600;
   transform: translateY(-200%);
-  transition: transform 160ms ease;
+  transition: transform 150ms ease;
 }
 
-.skip-link:focus-visible {
+.skip-link:focus {
   transform: translateY(0);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
-:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 0.35rem;
+/* ---------- Tipografi dokumen ---------- */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 
-#konten:focus {
-  outline: none;
+.doc-prose {
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
 
-/* ---------- Latar dekoratif ---------- */
-.site-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.9;
-  background-color: var(--bg);
-  background-image: var(--page-backdrop);
-  background-size:
-    auto,
-    auto,
-    auto,
-    48px 48px,
-    48px 48px,
-    28px 28px;
-  mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 100%);
+.doc-prose + .doc-prose {
+  margin-top: 1rem;
+}
+
+/* Tautan di dalam teks: garis bawah tipis, menebal saat hover. */
+.doc-link {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
   transition:
-    opacity 250ms ease,
-    background-color 250ms ease;
+    color 150ms ease,
+    text-decoration-color 150ms ease;
 }
 
-.site-background::before,
-.site-background::after {
-  position: absolute;
-  width: min(38rem, 72vw);
-  aspect-ratio: 1;
-  border-radius: 9999px;
-  content: '';
-  filter: blur(72px);
-  opacity: 0.24;
-  animation: ambient-float 20s ease-in-out infinite alternate;
+.doc-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }
 
-.site-background::before {
-  top: 8%;
-  left: -18rem;
-  background: var(--blob-1);
+/* ---------- Kontrol teks (tombol sekunder, filter) ---------- */
+.text-control {
+  color: var(--ink-muted);
+  background: none;
+  border: 0;
+  padding: 0.35rem 0;
+  font: inherit;
+  font-size: 0.9375rem;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 }
 
-.site-background::after {
-  top: 52%;
-  right: -16rem;
-  background: var(--blob-2);
-  animation-delay: -7s;
-  animation-duration: 26s;
+.text-control:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule-strong);
 }
 
-:root[data-theme='light'] .site-background {
-  opacity: 0.82;
+.text-control[aria-pressed='true'],
+.text-control[aria-current='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
-/* Blend hanya perlu di tema terang agar grid tidak "menutupi" kertas */
-:root[data-theme='light'] .site-background,
-:root[data-theme='light'] .hero-glow {
-  mix-blend-mode: multiply;
-}
-
-@keyframes ambient-float {
-  from {
-    transform: translate3d(0, -2%, 0) scale(0.96);
-  }
-  to {
-    transform: translate3d(10%, 8%, 0) scale(1.08);
-  }
-}
-
-.hero-glow {
-  background: var(--hero-glow);
-}
-
-/* ---------- Gradien brand (dipakai nama hero, progress bar, halo foto) ---------- */
-.brand-gradient {
-  background-image: var(--gradient-brand);
-}
-
-.photo-halo {
-  background-image: var(--gradient-halo);
-}
-
-/* ---------- Modal proyek: scrollbar internal disembunyikan ---------- */
-.project-modal {
+/* ---------- Panel modal ---------- */
+.sheet {
+  background-color: var(--panel);
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  box-shadow: 0 24px 60px -32px rgba(20, 12, 6, 0.55);
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.project-modal::-webkit-scrollbar {
+.sheet::-webkit-scrollbar {
   display: none;
 }
 
-/* ---------- Seleksi teks ---------- */
-::selection {
-  background-color: var(--selection-bg);
-  color: var(--selection-ink);
+/* ---------- Foto ---------- */
+/*
+ * Foto aslinya berlatarbelakang putih. Di tema kertas latar itu menyatu, tapi
+ * di tema gelap ia jadi kotak paling terang di halaman. Redupkan dan hangatkan
+ * sedikit agar tidak menarik mata lebih dari judul.
+ */
+.portrait {
+  filter: none;
 }
 
-/* ---------- Scrollbar tipis ---------- */
+:root[data-theme='dark'] .portrait {
+  filter: brightness(0.82) sepia(0.16) saturate(0.92);
+}
+
+/* ---------- Indikator posisi baca ---------- */
+.scroll-progress {
+  background-color: var(--accent);
+}
+
+/* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scroll-track);
+  background-color: var(--paper);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scroll-thumb);
-  border-radius: 8px;
+  background-color: var(--rule-strong);
+  border: 2px solid var(--paper);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scroll-thumb-hover);
-}
-
-/* ---------- Animasi ---------- */
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-@keyframes cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.animate-cursor {
-  animation: cursor-blink 1s step-start infinite;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-up {
-  animation: fade-up 0.5s ease-out both;
-}
-
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 650ms ease var(--reveal-delay, 0ms),
-    transform 650ms ease var(--reveal-delay, 0ms);
-}
-
-.reveal-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  background-color: var(--ink-faint);
 }
 
 /* ---------- Hormati preferensi gerak minimal ---------- */
@@ -433,19 +279,7 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .reveal-on-scroll {
-    opacity: 1;
-    transform: none;
-  }
-
-  .animate-marquee,
-  .site-background::before,
-  .site-background::after {
-    animation: none !important;
-    transform: none !important;
+    scroll-behavior: auto !important;
   }
 }

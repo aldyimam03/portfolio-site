@@ -12,7 +12,7 @@ Portfolio personal Aldy Imam Wijaya, Full-Stack Web Developer. Dibangun dengan R
 - Command palette `Ctrl/Cmd + K` untuk lompat ke bagian, membuka proyek, dan mengunduh CV
 - Filter + pencarian proyek, detail proyek dalam modal
 - Ikon teknologi dirender inline sebagai SVG (tanpa CDN pihak ketiga)
-- Font Inter & JetBrains Mono di-bundle sendiri
+- Font Newsreader (judul) & IBM Plex Sans (teks) di-bundle sendiri
 - Metadata OG/Twitter, `sitemap.xml`, `robots.txt`, dan JSON-LD `Person`
 
 ## Menjalankan lokal
@@ -46,18 +46,24 @@ scripts/                    # skrip sekali pakai: generator ikon & favicon
 src/
   main.tsx                  # entry React + impor font
   App.tsx                   # komposisi section, state tema & command palette
-  index.css                 # token desain (light/dark), utilitas kustom, animasi
+  index.css                 # token desain (kertas/gelap), tipografi dokumen, utilitas kustom
   lib/asset.ts              # helper URL aset yang sadar BASE_URL
   data/projects.ts          # data proyek (dipakai kartu, modal, palette)
   components/               # Navbar, Hero, About, Skills, Projects, Contact, …
 ```
 
+## Arah desain
+
+Halaman ini mengikuti arah yang ditulis di `DESIGN.md`: dokumen kerja berkertas gading, tinta gelap, satu aksen merah bata, judul serif Newsreader, teks IBM Plex Sans, dan margin kiri bernomor untuk setiap bagian. Dial-nya `ENERGY 2 / RHYTHM 2 / MOTION 1` — hanya transisi hover dan fokus, tanpa animasi masuk.
+
+Baca `DESIGN.md` sebelum mengubah tampilan. `AGENTS.md` memuat perintah proyek dan aturan kerja untuk agen.
+
 ## Sistem tema
 
 Warna tidak ditulis langsung di komponen. Semua memakai token semantik yang didefinisikan di `src/index.css`:
 
-- `@theme inline` memetakan `--color-bg`, `--color-surface`, `--color-ink`, `--color-muted`, `--color-accent`, dan kawan-kawan ke variabel CSS runtime.
-- Tema gelap adalah nilai default di `:root`; tema terang menimpa variabel yang sama di `:root[data-theme='light']`.
+- `@theme inline` memetakan `--color-paper`, `--color-ink`, `--color-rule`, `--color-accent`, dan kawan-kawan ke variabel CSS runtime.
+- Tema kertas adalah nilai default di `:root`; tema gelap menimpa variabel yang sama di `:root[data-theme='dark']`.
 
 Menambah warna baru cukup dengan mendaftarkan satu pasang variabel (gelap & terang) — tidak perlu menulis ulang `className` di komponen.
 

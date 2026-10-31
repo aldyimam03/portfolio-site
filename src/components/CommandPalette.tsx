@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 're
 import { asset } from '../lib/asset'
 
 const commands = [
-  { id: 'beranda', label: 'Buka Beranda', hint: 'Home', keywords: 'home beranda awal', icon: '⌂' },
-  { id: 'tentang', label: 'Lihat Tentang Saya', hint: 'About', keywords: 'about tentang profil', icon: '01' },
-  { id: 'keahlian', label: 'Lihat Keahlian', hint: 'Skills', keywords: 'skills keahlian teknologi stack', icon: '02' },
-  { id: 'proyek', label: 'Jelajahi Proyek', hint: 'Projects', keywords: 'projects proyek portfolio karya', icon: '03' },
-  { id: 'kontak', label: 'Hubungi Saya', hint: 'Contact', keywords: 'contact kontak email hubungi', icon: '04' },
-  { id: 'cv', label: 'Download CV', hint: 'Resume', keywords: 'cv resume curriculum vitae download unduh', icon: '↓' },
+  { id: 'beranda', label: 'Beranda', hint: 'Home', keywords: 'home beranda awal' },
+  { id: 'tentang', label: 'Tentang', hint: 'About', keywords: 'about tentang profil' },
+  { id: 'keahlian', label: 'Keahlian', hint: 'Skills', keywords: 'skills keahlian teknologi stack' },
+  { id: 'proyek', label: 'Proyek', hint: 'Projects', keywords: 'projects proyek portfolio karya' },
+  { id: 'kontak', label: 'Kontak', hint: 'Contact', keywords: 'contact kontak email hubungi' },
+  { id: 'cv', label: 'Unduh CV', hint: 'PDF', keywords: 'cv resume curriculum vitae download unduh' },
 ]
 
 interface CommandPaletteProps {
@@ -24,6 +24,7 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
     `${command.label} ${command.hint} ${command.keywords}`.toLowerCase().includes(query.toLowerCase()),
   )
   const activeSelected = Math.min(selected, Math.max(filtered.length - 1, 0))
+
   const changeOpen = useCallback(
     (nextOpen: boolean) => {
       onOpenChange(nextOpen)
@@ -72,11 +73,11 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
   const onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault()
-      setSelected((value) => (filtered.length ? (value + 1) % filtered.length : 0))
+      setSelected(filtered.length ? (activeSelected + 1) % filtered.length : 0)
     }
     if (event.key === 'ArrowUp') {
       event.preventDefault()
-      setSelected((value) => (filtered.length ? (value - 1 + filtered.length) % filtered.length : 0))
+      setSelected(filtered.length ? (activeSelected - 1 + filtered.length) % filtered.length : 0)
     }
     if (event.key === 'Enter' && filtered[activeSelected]) goTo(filtered[activeSelected].id)
   }
@@ -85,73 +86,68 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
 
   return (
     <div
-      className="fixed inset-0 z-[80] flex items-start justify-center px-4 pt-[16vh]"
+      className="fixed inset-0 z-[80] flex items-start justify-center px-4 pt-[14vh]"
       role="dialog"
       aria-modal="true"
-      aria-label="Command palette"
+      aria-label="Pencarian bagian halaman"
     >
       <button
         type="button"
-        aria-label="Tutup command palette"
+        aria-label="Tutup pencarian"
         onClick={() => changeOpen(false)}
-        className="absolute inset-0 bg-overlay backdrop-blur-sm"
+        tabIndex={-1}
+        className="absolute inset-0 cursor-default bg-overlay"
       />
-      <div className="animate-fade-up relative w-full max-w-lg overflow-hidden rounded-2xl border border-hairline-strong bg-panel shadow-2xl shadow-deep/50">
-        <div className="flex items-center gap-3 border-b border-hairline px-4">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            className="shrink-0 text-faint"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" />
-          </svg>
+
+      <div className="sheet relative w-full max-w-md overflow-hidden">
+        <div className="flex items-center gap-3 border-b border-rule px-4">
+          <label htmlFor="palette-input" className="sr-only">
+            Cari bagian
+          </label>
           <input
             ref={inputRef}
+            id="palette-input"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={onInputKeyDown}
-            placeholder="Cari section..."
-            aria-label="Cari perintah"
-            className="h-14 min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ghost"
+            placeholder="Cari bagian"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="palette-list"
+            aria-autocomplete="list"
+            aria-activedescendant={filtered.length ? `palette-item-${activeSelected}` : undefined}
+            className="h-12 min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-faint"
           />
-          <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] text-faint">ESC</kbd>
+          <kbd className="num rounded-[2px] border border-rule px-1.5 py-0.5 text-[0.625rem] text-ink-faint">Esc</kbd>
         </div>
 
-        <div className="max-h-72 overflow-y-auto p-2">
+        <ul id="palette-list" role="listbox" aria-label="Bagian halaman" className="max-h-72 overflow-y-auto">
           {filtered.length ? (
             filtered.map((command, index) => (
-              <button
-                key={command.id}
-                type="button"
-                onClick={() => goTo(command.id)}
-                onMouseEnter={() => setSelected(index)}
-                className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition ${
-                  activeSelected === index
-                    ? 'bg-accent-soft text-ink'
-                    : 'text-muted hover:bg-surface-soft hover:text-ink'
-                }`}
-              >
-                <span className="flex h-8 w-8 items-center justify-center rounded-md border border-hairline bg-surface-soft font-mono text-[10px] text-accent-strong">
-                  {command.icon}
-                </span>
-                <span className="flex-1 text-sm">{command.label}</span>
-                <span className="font-mono text-[10px] text-ghost">{command.hint}</span>
-              </button>
+              <li key={command.id} id={`palette-item-${index}`} role="option" aria-selected={activeSelected === index}>
+                <button
+                  type="button"
+                  onClick={() => goTo(command.id)}
+                  onMouseEnter={() => setSelected(index)}
+                  className={`flex w-full items-baseline gap-4 border-b border-rule px-4 py-3 text-left text-sm transition-colors last:border-b-0 ${
+                    activeSelected === index ? 'bg-accent-wash text-ink' : 'text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  <span className="num text-[0.625rem] text-ink-faint">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="flex-1">{command.label}</span>
+                  <span className="num text-[0.625rem] text-ink-faint">{command.hint}</span>
+                </button>
+              </li>
             ))
           ) : (
-            <p className="px-3 py-8 text-center text-sm text-faint">Section tidak ditemukan.</p>
+            <li className="px-4 py-8 text-center text-sm text-ink-muted">Tidak ada bagian yang cocok.</li>
           )}
-        </div>
-        <div className="flex items-center gap-4 border-t border-hairline px-4 py-2.5 font-mono text-[10px] text-ghost">
-          <span>↑↓ navigasi</span>
-          <span>↵ pilih</span>
-          <span className="ml-auto">Ctrl K buka/tutup</span>
+        </ul>
+
+        <div className="num flex items-center gap-4 border-t border-rule px-4 py-2.5 text-[0.625rem] text-ink-faint">
+          <span>↑↓ pilih</span>
+          <span>↵ buka</span>
+          <span className="ml-auto">Ctrl K</span>
         </div>
       </div>
     </div>

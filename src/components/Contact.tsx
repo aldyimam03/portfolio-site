@@ -1,58 +1,12 @@
 import { useState } from 'react'
 import { asset } from '../lib/asset'
-import SectionHeading from './SectionHeading'
+import Section from './Section'
 
 const contacts = [
-  {
-    label: 'Email',
-    value: 'aldyimam03@gmail.com',
-    href: 'mailto:aldyimam03@gmail.com',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="5" width="18" height="14" rx="2" />
-        <path d="m3 7 9 6 9-6" />
-      </svg>
-    ),
-  },
-  {
-    label: 'GitHub',
-    value: 'github.com/aldyimam03',
-    href: 'https://github.com/aldyimam03',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.66.41.36.78 1.05.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.2.67.8.55A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/aldyimamwijaya',
-    href: 'https://www.linkedin.com/in/aldyimamwijaya/',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M5.2 3.4A2.2 2.2 0 1 1 .8 3.4a2.2 2.2 0 0 1 4.4 0ZM1.1 8.1h4.2V23H1.1V8.1ZM7.9 8.1h4v2h.1c.6-1.1 2-2.3 4.2-2.3 4.5 0 5.3 3 5.3 6.9V23h-4.2v-7.4c0-1.8 0-4.1-2.5-4.1s-2.9 2-2.9 4V23H7.9V8.1Z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'WhatsApp',
-    value: 'wa.me/6287702519051',
-    href: 'https://wa.me/6287702519051',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.8L.2 24l6.6-1.7a11.8 11.8 0 0 0 5.3 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.1-3.5-8.3ZM12.1 21.5h-.1a9.7 9.7 0 0 1-4.9-1.3l-.4-.2-3.9 1 1-3.8-.3-.4a9.7 9.7 0 0 1-1.5-5.1c0-5.4 4.4-9.8 9.9-9.8 2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c-.1 5.4-4.5 9.8-9.6 9.8Zm5.4-7.3c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.2-3.5-2.7-.3-.5.3-.5.8-1.7.1-.2 0-.4 0-.5s-.7-1.7-.9-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.8 4.3 1.8.8 2.5.9 3.4.8.5-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.3-.3-.4-.5-.5Z" />
-      </svg>
-    ),
-  },
+  { label: 'Email', value: 'aldyimam03@gmail.com', href: 'mailto:aldyimam03@gmail.com' },
+  { label: 'GitHub', value: 'github.com/aldyimam03', href: 'https://github.com/aldyimam03' },
+  { label: 'LinkedIn', value: 'linkedin.com/in/aldyimamwijaya', href: 'https://www.linkedin.com/in/aldyimamwijaya/' },
+  { label: 'WhatsApp', value: 'wa.me/6287702519051', href: 'https://wa.me/6287702519051' },
 ]
 
 export default function Contact() {
@@ -69,102 +23,63 @@ export default function Contact() {
   }
 
   return (
-    <section id="kontak" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24">
-      <SectionHeading index="04" title="Kontak" />
-
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
-        <div className="space-y-4">
-          <p className="text-base text-justify leading-relaxed text-muted">
+    <Section id="kontak" index="04" title="Kontak">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-16">
+        <div className="min-w-0">
+          <p className="doc-prose text-ink-muted">
             Sedang mencari developer untuk sebuah proyek? Saya terbuka untuk{' '}
-            <span className="text-body">diskusi, kolaborasi, dan kesempatan baru</span>. Jangan ragu untuk menghubungi
-            saya pada kontak yang tersedia
+            <span className="text-ink">diskusi, kolaborasi, dan kesempatan baru</span>.
           </p>
-          <div className="flex flex-col gap-3 pt-2">
-            {contacts.map((c) => (
-              <a
-                key={c.label}
-                href={c.href}
-                target={c.href.startsWith('http') ? '_blank' : undefined}
-                rel={c.href.startsWith('http') ? 'noreferrer' : undefined}
-                className="group flex items-center gap-4 rounded-xl border border-hairline bg-surface p-4 transition hover:border-accent-line hover:bg-surface-strong"
+
+          <a
+            href="mailto:aldyimam03@gmail.com"
+            className="mt-6 inline-block font-display text-[clamp(1.5rem,4vw,2.125rem)] leading-tight text-ink transition-colors hover:text-accent"
+          >
+            aldyimam03@gmail.com
+          </a>
+
+          <dl className="mt-10 border-t border-rule">
+            {contacts.map((contact) => (
+              <div
+                key={contact.label}
+                className="grid gap-1 border-b border-rule py-3 sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-4"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent-strong transition group-hover:bg-accent-soft-hover">
-                  {c.icon}
-                </span>
-                <span>
-                  <span className="block font-mono text-[11px] uppercase tracking-wider text-faint">{c.label}</span>
-                  <span className="block text-sm font-medium text-body group-hover:text-ink">{c.value}</span>
-                </span>
-              </a>
-            ))}
-            <a
-              href={asset('cv-aldy-imam-wijaya.pdf')}
-              download="Aldy-Imam-Wijaya-CV.pdf"
-              className="group flex items-center gap-4 rounded-xl border border-hairline bg-surface p-4 transition hover:border-accent-line hover:bg-surface-strong"
-            >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent-strong transition group-hover:bg-accent-soft-hover">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M12 3v12" />
-                  <path d="m7 10 5 5 5-5" />
-                  <path d="M5 21h14" />
-                </svg>
-              </span>
-              <span>
-                <span className="block font-mono text-[11px] uppercase tracking-wider text-faint">CV</span>
-                <span className="block text-sm font-medium text-body group-hover:text-ink">Download CV</span>
-              </span>
-            </a>
-            <button
-              type="button"
-              onClick={copyEmail}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-hairline bg-surface px-4 text-sm text-soft transition hover:border-accent-line hover:bg-accent-soft hover:text-ink"
-            >
-              {copied ? (
-                <>
-                  <span className="text-mint">✓</span> Email disalin
-                </>
-              ) : (
-                <>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
+                <dt className="text-xs text-ink-faint sm:pt-0.5">{contact.label}</dt>
+                <dd>
+                  <a
+                    href={contact.href}
+                    target={contact.href.startsWith('http') ? '_blank' : undefined}
+                    rel={contact.href.startsWith('http') ? 'noreferrer' : undefined}
+                    className="doc-link inline-block break-all py-1 text-[0.9375rem]"
                   >
-                    <rect x="9" y="9" width="10" height="10" rx="2" />
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                  </svg>
-                  Salin email
-                </>
-              )}
+                    {contact.value}
+                  </a>
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <button type="button" onClick={copyEmail} className="text-control">
+              {copied ? 'Email disalin' : 'Salin email'}
             </button>
+            <span role="status" aria-live="polite" className="text-xs text-ink-faint">
+              {copied ? 'aldyimam03@gmail.com ada di papan klip.' : ''}
+            </span>
           </div>
         </div>
 
-        <figure className="flex items-center justify-center">
+        <figure className="lg:pt-1">
           <img
             src={asset('me-002.webp')}
-            alt="Foto Aldy Imam Wijaya"
+            alt="Aldy Imam Wijaya"
             loading="lazy"
             width={800}
             height={1066}
-            className="w-full max-w-sm rounded-xl border border-hairline object-cover shadow-xl shadow-deep/40"
+            className="portrait h-56 w-44 border border-rule object-cover object-center lg:h-auto lg:w-full lg:aspect-[3/4]"
           />
         </figure>
       </div>
-    </section>
+    </Section>
   )
 }

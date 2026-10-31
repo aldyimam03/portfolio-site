@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { projects, categoryLabel, type Project, type ProjectCategory } from '../data/projects'
-import Reveal from './Reveal'
-import SectionHeading from './SectionHeading'
-import { TechBadge } from './TechIcon'
+import Section from './Section'
 
 type Filter = 'semua' | ProjectCategory
 
@@ -23,112 +21,81 @@ export default function Projects() {
     return matchesFilter && searchable.includes(query.toLowerCase())
   })
 
-  return (
-    <section id="proyek" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24">
-      <SectionHeading index="03" title="Proyek" />
+  const reset = () => {
+    setQuery('')
+    setFilter('semua')
+  }
 
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter proyek">
-          {filters.map((f) => (
+  return (
+    <Section id="proyek" index="03" title="Proyek">
+      <div className="flex flex-col gap-4 border-b border-rule pb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+        <div className="flex gap-6" role="group" aria-label="Filter proyek">
+          {filters.map((item) => (
             <button
-              key={f.id}
+              key={item.id}
               type="button"
-              aria-pressed={filter === f.id}
-              onClick={() => setFilter(f.id)}
-              className={`rounded-full px-4 py-1.5 text-sm transition ${
-                filter === f.id
-                  ? 'bg-accent-solid text-on-accent shadow-lg shadow-accent/25'
-                  : 'border border-hairline bg-surface-soft text-muted hover:border-hairline-hover hover:text-ink'
-              }`}
+              aria-pressed={filter === item.id}
+              onClick={() => setFilter(item.id)}
+              className="text-control"
             >
-              {f.label}
+              {item.label}
             </button>
           ))}
         </div>
 
-        <label className="flex h-10 items-center gap-2 rounded-lg border border-hairline bg-surface px-3 text-faint transition focus-within:border-accent-line focus-within:text-accent-strong">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" />
-          </svg>
-          <span className="sr-only">Cari proyek</span>
+        <label className="flex items-baseline gap-3 sm:w-64">
+          <span className="text-xs text-ink-faint">Cari</span>
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Cari proyek atau stack..."
-            className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-ghost sm:w-52"
+            placeholder="nama proyek atau teknologi"
+            className="min-w-0 flex-1 border-b border-rule bg-transparent pb-1 text-sm text-ink outline-none transition-colors placeholder:text-ink-faint hover:border-rule-strong focus:border-accent"
           />
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery('')}
-              aria-label="Hapus pencarian"
-              className="text-faint hover:text-ink"
-            >
-              ×
-            </button>
-          )}
         </label>
       </div>
 
-      <p className="mt-5 font-mono text-[11px] text-ghost" role="status" aria-live="polite">
-        {visible.length} proyek ditemukan{query ? ` untuk “${query}”` : ''}
+      <p role="status" aria-live="polite" className="num mt-3 text-xs text-ink-faint">
+        {visible.length} dari {projects.length} proyek
+        {query ? `, kata kunci “${query}”` : ''}
       </p>
 
       {visible.length ? (
-        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-4">
           {visible.map((project, index) => (
-            <Reveal key={project.id} delay={index * 80}>
-              <article className="group flex h-full flex-col rounded-xl border border-hairline bg-surface p-6 transition hover:-translate-y-1 hover:border-accent-line hover:bg-surface-strong">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-md border border-hairline bg-surface-soft px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-accent-strong">
-                    {categoryLabel[project.category]}
-                  </span>
-                  {project.featured && <span className="font-mono text-[11px] text-faint">★ fokus utama</span>}
+            <li key={project.id} className="border-b border-rule">
+              <article className="grid gap-3 py-6 md:grid-cols-[2.5rem_minmax(0,1fr)_auto] md:gap-6 md:py-7">
+                <span className="num text-xs text-ink-faint md:pt-2">{String(index + 1).padStart(2, '0')}</span>
+
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-baseline gap-x-3">
+                    <h3 className="text-[1.35rem] leading-snug">
+                      <button
+                        type="button"
+                        onClick={() => setActive(project)}
+                        className="text-left transition-colors hover:text-accent"
+                      >
+                        {project.title}
+                      </button>
+                    </h3>
+                    {project.featured && <span className="text-[0.6875rem] text-accent">Fokus utama</span>}
+                  </div>
+                  <p className="mt-2 max-w-[62ch] text-[0.9375rem] text-ink-muted">{project.tagline}</p>
+                  <p className="num mt-3 text-xs text-ink-faint">{project.tech.join(' · ')}</p>
                 </div>
 
-                <h3 className="mt-4 text-lg font-semibold text-ink">{project.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{project.tagline}</p>
-
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {project.tech.slice(0, 5).map((tech) => (
-                    <TechBadge key={tech} name={tech} />
-                  ))}
-                  {project.tech.length > 5 && (
-                    <span className="rounded border border-hairline bg-surface-soft px-2 py-0.5 font-mono text-[11px] text-faint">
-                      +{project.tech.length - 5}
-                    </span>
-                  )}
-                </div>
-
-                <div className="mt-5 flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setActive(project)}
-                    className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-medium text-accent transition group-hover:gap-3 hover:text-accent-strong"
-                  >
-                    Detail proyek
-                    <span aria-hidden>→</span>
+                <div className="flex items-start gap-5 md:pt-2">
+                  <button type="button" onClick={() => setActive(project)} className="doc-link -my-1 py-1 text-sm">
+                    Detail
                   </button>
                   {project.demo && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-ink"
-                      aria-label={`Buka live demo ${project.title}`}
+                      aria-label={`Buka demo ${project.title} di tab baru`}
+                      className="doc-link -my-1 py-1 text-sm"
                     >
-                      <span className="rounded bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent-strong">
-                        Live
-                      </span>
+                      Live
                     </a>
                   )}
                   {project.repo && (
@@ -136,52 +103,48 @@ export default function Projects() {
                       href={project.repo}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-ink"
-                      aria-label={`Buka repositori ${project.title}`}
+                      aria-label={`Buka kode ${project.title} di GitHub`}
+                      className="doc-link -my-1 py-1 text-sm"
                     >
-                      <TechBadge name="GitHub" />
+                      Kode
                     </a>
                   )}
                 </div>
               </article>
-            </Reveal>
+            </li>
           ))}
-        </div>
+        </ol>
       ) : (
-        <div className="mt-6 rounded-xl border border-dashed border-hairline bg-surface-faint px-6 py-12 text-center">
-          <p className="text-sm text-muted">Tidak ada proyek yang cocok.</p>
-          <button
-            type="button"
-            onClick={() => {
-              setQuery('')
-              setFilter('semua')
-            }}
-            className="mt-3 text-sm text-accent hover:text-accent-strong"
-          >
-            Reset filter
+        <div className="border-b border-rule py-10">
+          <p className="text-[0.9375rem] text-ink">
+            Tidak ada proyek yang cocok dengan {query ? `kata kunci “${query}”` : 'filter ini'}.
+          </p>
+          <button type="button" onClick={reset} className="doc-link mt-2 text-sm">
+            Tampilkan semua proyek
           </button>
         </div>
       )}
 
-      {active && <ProjectModal project={active} onClose={() => setActive(null)} />}
-    </section>
+      {active && <ProjectSheet project={active} onClose={() => setActive(null)} />}
+    </Section>
   )
 }
 
-function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const modalRef = useRef<HTMLDivElement>(null)
+function ProjectSheet({ project, onClose }: { project: Project; onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const previousFocus = document.activeElement as HTMLElement | null
     const previousOverflow = document.body.style.overflow
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
         return
       }
-      if (event.key !== 'Tab' || !modalRef.current) return
-      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+      if (event.key !== 'Tab' || !panelRef.current) return
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
       )
       if (!focusable.length) return
@@ -195,9 +158,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         first.focus()
       }
     }
+
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     closeRef.current?.focus()
+
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = previousOverflow
@@ -209,28 +174,22 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="project-modal-title"
-      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-4 pb-8 pt-24 sm:px-6 sm:pt-24"
+      aria-labelledby="project-sheet-title"
+      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-4 pt-20 sm:pt-24"
     >
       <button
         type="button"
         aria-label="Tutup detail proyek"
         onClick={onClose}
         tabIndex={-1}
-        className="project-modal-overlay fixed inset-0 z-0 cursor-default bg-overlay backdrop-blur-sm"
+        className="fixed inset-0 z-0 cursor-default bg-overlay"
       />
 
-      <div
-        ref={modalRef}
-        role="document"
-        className="project-modal animate-fade-up relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-hairline bg-panel p-6 shadow-2xl sm:p-8"
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <span className="rounded-md border border-hairline bg-surface-soft px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-accent-strong">
-              {categoryLabel[project.category]}
-            </span>
-            <h3 id="project-modal-title" className="mt-3 text-2xl font-bold text-ink">
+      <div ref={panelRef} role="document" className="sheet relative z-10 w-full max-w-2xl overflow-y-auto p-6 sm:p-8">
+        <div className="flex items-start justify-between gap-6">
+          <div className="min-w-0">
+            <p className="text-xs text-ink-faint">{categoryLabel[project.category]}</p>
+            <h3 id="project-sheet-title" className="mt-1.5 text-[1.75rem] leading-tight">
               {project.title}
             </h3>
           </div>
@@ -239,59 +198,46 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             type="button"
             onClick={onClose}
             aria-label="Tutup"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-surface-soft hover:text-ink"
+            className="-mr-2 -mt-2 flex h-10 w-10 shrink-0 items-center justify-center text-ink-muted transition-colors hover:text-ink"
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <path d="M6 6l12 12M18 6L6 18" />
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
-        <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted">
-          {project.description.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+        <div className="mt-5 space-y-3 border-t border-rule pt-5">
+          {project.description.map((paragraph) => (
+            <p key={paragraph} className="text-[0.9375rem] leading-relaxed text-ink-muted">
+              {paragraph}
+            </p>
           ))}
         </div>
 
-        <div className="mt-6">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-faint">Tech stack</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {project.tech.map((tech) => (
-              <TechBadge key={tech} name={tech} />
-            ))}
-          </div>
+        <div className="mt-6 border-t border-rule pt-4">
+          <p className="text-xs text-ink-faint">Teknologi</p>
+          <p className="num mt-1.5 text-sm text-ink-soft">{project.tech.join(' · ')}</p>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
           {project.demo && (
             <a
               href={project.demo}
               target="_blank"
               rel="noreferrer"
-              className="rounded-lg border border-accent-line bg-accent-solid px-5 py-2.5 text-sm font-semibold text-on-accent shadow-lg shadow-accent/25 transition hover:bg-accent-solid-hover"
+              className="rounded-[2px] bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-strong"
             >
-              Lihat Demo ↗
+              Buka demo
             </a>
           )}
           {project.repo && (
-            <a
-              href={project.repo}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-lg border border-hairline-strong bg-surface-soft px-5 py-2.5 text-sm font-semibold text-body transition hover:border-hairline-hover hover:bg-surface-soft"
-            >
-              Kode Sumber ↗
+            <a href={project.repo} target="_blank" rel="noreferrer" className="doc-link text-sm">
+              Lihat kode
             </a>
           )}
-          {!project.demo && !project.repo && <p className="text-xs text-faint">Repositori publik belum tersedia.</p>}
+          {!project.demo && !project.repo && (
+            <p className="text-xs text-ink-faint">Repositori publik belum tersedia.</p>
+          )}
         </div>
       </div>
     </div>

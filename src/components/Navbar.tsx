@@ -9,7 +9,7 @@ const links = [
 ]
 
 interface NavbarProps {
-  theme: 'dark' | 'light'
+  theme: 'light' | 'dark'
   onToggleTheme: () => void
   onOpenPalette: () => void
 }
@@ -20,10 +20,28 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
   const [active, setActive] = useState('beranda')
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const ids = links.map((link) => link.id)
+
+    const update = () => {
+      setScrolled(window.scrollY > 8)
+
+      const offset = window.innerHeight * 0.25
+      let current = ids[0]
+      for (const id of ids) {
+        const element = document.getElementById(id)
+        if (element && element.getBoundingClientRect().top <= offset) current = id
+      }
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8
+      setActive(atBottom ? ids[ids.length - 1] : current)
+    }
+
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
   }, [])
 
   useEffect(() => {
@@ -35,27 +53,6 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
     return () => document.removeEventListener('keydown', onKey)
   }, [open])
 
-  useEffect(() => {
-    const sections = links
-      .map(({ id }) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section))
-
-    if (!('IntersectionObserver' in window)) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActive(visible.target.id)
-      },
-      { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5] },
-    )
-
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [])
-
   const navigate = (id: string) => {
     setActive(id)
     setOpen(false)
@@ -63,151 +60,125 @@ export default function Navbar({ theme, onToggleTheme, onOpenPalette }: NavbarPr
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors ${
-        scrolled ? 'border-b border-hairline-soft bg-nav backdrop-blur' : 'bg-transparent'
+      className={`fixed inset-x-0 top-0 z-50 bg-paper transition-colors ${
+        scrolled ? 'border-b border-rule' : 'border-b border-transparent'
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6">
-        <a href="#beranda" onClick={() => navigate('beranda')} className="font-mono text-sm font-medium text-ink">
-          aldy<span className="text-accent">.dev</span>
+      <nav className="mx-auto flex h-16 w-full max-w-[78rem] items-center justify-between gap-6 px-6 md:px-10">
+        <a
+          href="#beranda"
+          onClick={() => navigate('beranda')}
+          className="font-display text-[1.05rem] tracking-tight text-ink transition-colors hover:text-accent"
+        >
+          Aldy Imam Wijaya
         </a>
 
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-baseline gap-7 md:flex">
           {links.map((link) => (
             <li key={link.id}>
               <a
                 href={link.href}
                 onClick={() => navigate(link.id)}
-                aria-current={active === link.id ? 'page' : undefined}
-                className={`relative py-2 text-sm transition-colors ${
-                  active === link.id ? 'text-ink' : 'text-muted hover:text-ink'
+                aria-current={active === link.id ? 'location' : undefined}
+                className={`inline-block border-b pb-0.5 text-[0.9375rem] transition-colors ${
+                  active === link.id ? 'border-accent text-ink' : 'border-transparent text-ink-muted hover:text-ink'
                 }`}
               >
                 {link.label}
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-accent transition-transform ${
-                    active === link.id ? 'scale-x-100' : 'scale-x-0'
-                  }`}
-                />
               </a>
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={onOpenPalette}
+            className="hidden h-9 items-center gap-2 px-2 text-[0.8125rem] text-ink-muted transition-colors hover:text-ink sm:flex"
+            aria-label="Buka pencarian bagian"
+          >
+            Cari
+            <kbd className="num rounded-[2px] border border-rule px-1 py-0.5 text-[0.625rem] text-ink-faint">⌘K</kbd>
+          </button>
+
+          <button
+            type="button"
+            onClick={onOpenPalette}
+            aria-label="Buka pencarian"
+            className="flex h-9 w-9 items-center justify-center text-ink-muted transition-colors hover:text-ink sm:hidden"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" strokeLinecap="round" />
+            </svg>
+          </button>
+
           <button
             type="button"
             onClick={onToggleTheme}
-            aria-label={theme === 'dark' ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
-            title={theme === 'dark' ? 'Mode terang' : 'Mode gelap'}
-            aria-pressed={theme === 'light'}
-            className="flex h-10 items-center justify-center gap-2 rounded-lg border border-hairline bg-surface-soft px-2.5 text-soft transition hover:bg-surface-soft hover:text-ink sm:px-3"
+            aria-label={theme === 'light' ? 'Gunakan tema gelap' : 'Gunakan tema terang'}
+            title={theme === 'light' ? 'Tema gelap' : 'Tema terang'}
+            aria-pressed={theme === 'dark'}
+            className="flex h-9 w-9 items-center justify-center text-ink-muted transition-colors hover:text-ink"
           >
-            {theme === 'dark' ? (
+            {theme === 'light' ? (
               <svg
-                width="18"
-                height="18"
+                width="17"
+                height="17"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              >
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-              </svg>
-            ) : (
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
+                strokeWidth="1.7"
                 strokeLinecap="round"
               >
                 <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.7 6.7 0 0 0 9.8 9.8Z" />
               </svg>
+            ) : (
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+              </svg>
             )}
-            <span className="hidden text-xs font-medium sm:inline">{theme === 'dark' ? 'Terang' : 'Gelap'}</span>
           </button>
 
           <button
             type="button"
-            onClick={onOpenPalette}
-            className="hidden h-9 items-center gap-2 rounded-lg border border-hairline bg-surface-soft px-3 text-xs text-muted transition hover:border-hairline-hover hover:text-ink sm:flex"
-            aria-label="Buka command palette"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-4-4" />
-            </svg>
-            Cari
-            <kbd className="rounded border border-hairline px-1 py-1 font-mono text-[10px] text-faint">⌘ + K</kbd>
-          </button>
-
-          <button
-            type="button"
-            onClick={onOpenPalette}
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-soft transition hover:bg-surface-soft hover:text-ink sm:hidden"
-            aria-label="Buka pencarian"
-          >
-            <svg
-              width="19"
-              height="19"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-4-4" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            aria-label={open ? 'Tutup menu' : 'Buka menu'}
+            aria-label={open ? 'Tutup daftar bagian' : 'Buka daftar bagian'}
             aria-expanded={open}
-            aria-controls="mobile-navigation"
+            aria-controls="navigasi-mobile"
             onClick={() => setOpen((value) => !value)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-soft transition hover:bg-surface-soft md:hidden"
+            className="flex h-9 w-9 items-center justify-center text-ink-muted transition-colors hover:text-ink md:hidden"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+              {open ? (
+                <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+              )}
             </svg>
           </button>
         </div>
       </nav>
 
       {open && (
-        <div id="mobile-navigation" className="border-b border-hairline-soft bg-nav-strong backdrop-blur md:hidden">
-          <ul className="flex flex-col px-6 py-2">
+        <div id="navigasi-mobile" className="border-t border-rule md:hidden">
+          <ul className="mx-auto w-full max-w-[78rem] px-6 py-2">
             {links.map((link) => (
-              <li key={link.id}>
+              <li key={link.id} className="border-b border-rule last:border-b-0">
                 <a
                   href={link.href}
                   onClick={() => navigate(link.id)}
-                  className={`block border-l-2 py-3 pl-3 text-sm transition ${
-                    active === link.id ? 'border-accent text-ink' : 'border-transparent text-soft hover:text-ink'
+                  aria-current={active === link.id ? 'location' : undefined}
+                  className={`block py-3 text-base transition-colors ${
+                    active === link.id ? 'text-accent' : 'text-ink-soft hover:text-ink'
                   }`}
                 >
                   {link.label}

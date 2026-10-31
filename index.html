@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
 
-    <!-- Anti-FOUC: pasang tema sebelum paint pertama, supaya pengguna light mode tidak melihat kedip gelap -->
+    <!-- Anti-FOUC: pasang tema sebelum paint pertama, supaya pengguna tema gelap tidak melihat kedip kertas -->
     <script>
       try {
-        if (localStorage.getItem('portfolio-theme') === 'light') {
-          document.documentElement.dataset.theme = 'light'
+        if (localStorage.getItem('portfolio-theme') === 'dark') {
+          document.documentElement.dataset.theme = 'dark'
         }
       } catch (e) {
         /* storage bisa diblokir di konteks private/embedded */
@@ -26,7 +26,7 @@
       content="Portofolio Aldy Imam Wijaya — Full-Stack Web Developer (Laravel, Node.js, React). Lihat proyek dan hubungi saya."
     />
     <meta name="author" content="Aldy Imam Wijaya" />
-    <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#16110d" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f4ede3" media="(prefers-color-scheme: light)" />
 
     <!--

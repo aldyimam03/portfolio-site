@@ -9,14 +9,14 @@ import Projects from './components/Projects'
 import ScrollTools from './components/ScrollTools'
 import Skills from './components/Skills'
 
-type Theme = 'dark' | 'light'
+type Theme = 'light' | 'dark'
 
 function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark'
+  if (typeof window === 'undefined') return 'light'
   try {
-    return window.localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark'
+    return window.localStorage.getItem('portfolio-theme') === 'dark' ? 'dark' : 'light'
   } catch {
-    return 'dark'
+    return 'light'
   }
 }
 
@@ -24,7 +24,7 @@ function saveTheme(theme: Theme) {
   try {
     window.localStorage.setItem('portfolio-theme', theme)
   } catch {
-    // Storage can be blocked in private or embedded browser contexts.
+    // Storage bisa diblokir di konteks private atau embedded.
   }
 }
 
@@ -38,8 +38,7 @@ export default function App() {
   }, [theme])
 
   return (
-    <div className="site-shell relative isolate min-h-screen overflow-x-clip font-sans">
-      <div aria-hidden="true" className="site-background" />
+    <div className="min-h-screen bg-paper font-sans">
       <a href="#konten" className="skip-link">
         Langsung ke konten
       </a>
@@ -50,7 +49,7 @@ export default function App() {
         onOpenPalette={() => setPaletteOpen(true)}
       />
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-      <main id="konten" tabIndex={-1} className="relative z-10 outline-none">
+      <main id="konten" tabIndex={-1} className="outline-none">
         <Hero />
         <About />
         <Skills />
