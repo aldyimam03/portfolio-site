@@ -37,7 +37,7 @@ export default function ScrollTools() {
     <>
       <div
         aria-hidden="true"
-        className="scroll-progress fixed inset-x-0 top-0 z-[70] h-0.5 origin-left bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400 transition-transform duration-150"
+        className="scroll-progress brand-gradient fixed inset-x-0 top-0 z-[70] h-0.5 origin-left transition-transform duration-150"
         style={{ transform: `scaleX(${progress})` }}
       />
 
@@ -46,9 +46,18 @@ export default function ScrollTools() {
           type="button"
           onClick={backToTop}
           aria-label="Kembali ke atas"
-          className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-slate-900/90 text-slate-300 shadow-xl shadow-slate-950/40 backdrop-blur transition hover:-translate-y-1 hover:border-indigo-400/60 hover:text-white"
+          className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-hairline-strong bg-panel/90 text-soft shadow-xl shadow-deep/40 backdrop-blur transition hover:-translate-y-1 hover:border-accent-line hover:text-ink"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="m18 15-6-6-6 6" />
           </svg>
         </button>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aldyimam03.github.io/portfolio-site/sitemap.xml

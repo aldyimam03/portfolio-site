@@ -40,6 +40,9 @@ export default function App() {
   return (
     <div className="site-shell relative isolate min-h-screen overflow-x-clip font-sans">
       <div aria-hidden="true" className="site-background" />
+      <a href="#konten" className="skip-link">
+        Langsung ke konten
+      </a>
       <ScrollTools />
       <Navbar
         theme={theme}
@@ -47,7 +50,7 @@ export default function App() {
         onOpenPalette={() => setPaletteOpen(true)}
       />
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-      <main className="relative z-10">
+      <main id="konten" tabIndex={-1} className="relative z-10 outline-none">
         <Hero />
         <About />
         <Skills />

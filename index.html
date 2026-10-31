@@ -2,23 +2,88 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Anti-FOUC: pasang tema sebelum paint pertama, supaya pengguna light mode tidak melihat kedip gelap -->
+    <script>
+      try {
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+          document.documentElement.dataset.theme = 'light'
+        }
+      } catch (e) {
+        /* storage bisa diblokir di konteks private/embedded */
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="%BASE_URL%favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%BASE_URL%favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <meta
       name="description"
       content="Portofolio Aldy Imam Wijaya — Full-Stack Web Developer (Laravel, Node.js, React). Lihat proyek dan hubungi saya."
     />
-    <title>Aldy Imam Wijaya — Full-Stack Web Developer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+    <meta name="author" content="Aldy Imam Wijaya" />
+    <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4ede3" media="(prefers-color-scheme: light)" />
+
+    <!--
+      OG/Twitter. og:image wajib URL absolut agar terbaca crawler.
+      Ganti domain di bawah bila pindah hosting.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aldy Imam Wijaya" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content="https://aldyimam03.github.io/portfolio-site/" />
+    <meta property="og:title" content="Aldy Imam Wijaya — Full-Stack Web Developer" />
+    <meta
+      property="og:description"
+      content="Portofolio Aldy Imam Wijaya — Full-Stack Web Developer. Laravel, Node.js, React, TypeScript. Lihat proyek dan hubungi saya."
     />
+    <meta property="og:image" content="https://aldyimam03.github.io/portfolio-site/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kartu nama Aldy Imam Wijaya — Full-Stack Web Developer" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aldy Imam Wijaya — Full-Stack Web Developer" />
+    <meta
+      name="twitter:description"
+      content="Portofolio Aldy Imam Wijaya — Full-Stack Web Developer. Laravel, Node.js, React, TypeScript."
+    />
+    <meta name="twitter:image" content="https://aldyimam03.github.io/portfolio-site/og-image.jpg" />
+
+    <title>Aldy Imam Wijaya — Full-Stack Web Developer</title>
+
+    <!-- Structured data: membantu mesin pencari memahami siapa pemilik situs ini -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Aldy Imam Wijaya",
+        "jobTitle": "Full-Stack Web Developer",
+        "url": "https://aldyimam03.github.io/portfolio-site/",
+        "image": "https://aldyimam03.github.io/portfolio-site/og-image.jpg",
+        "email": "mailto:aldyimam03@gmail.com",
+        "knowsAbout": [
+          "Laravel",
+          "PHP",
+          "Node.js",
+          "Express.js",
+          "React",
+          "TypeScript",
+          "Tailwind CSS",
+          "PostgreSQL",
+          "MySQL",
+          "Docker"
+        ],
+        "sameAs": ["https://github.com/aldyimam03", "https://www.linkedin.com/in/aldyimamwijaya/"]
+      }
+    </script>
+
+    <link rel="preload" as="image" href="%BASE_URL%me-001.webp" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

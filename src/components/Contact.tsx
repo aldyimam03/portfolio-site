@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { asset } from '../lib/asset'
 import SectionHeading from './SectionHeading'
 
 const contacts = [
@@ -7,7 +8,16 @@ const contacts = [
     value: 'aldyimam03@gmail.com',
     href: 'mailto:aldyimam03@gmail.com',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <rect x="3" y="5" width="18" height="14" rx="2" />
         <path d="m3 7 9 6 9-6" />
       </svg>
@@ -64,10 +74,10 @@ export default function Contact() {
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">
-          <p className="text-base text-justify leading-relaxed text-slate-400">
+          <p className="text-base text-justify leading-relaxed text-muted">
             Sedang mencari developer untuk sebuah proyek? Saya terbuka untuk{' '}
-            <span className="text-slate-200">diskusi, kolaborasi, dan kesempatan baru</span>.
-            Jangan ragu untuk menghubungi saya pada kontak yang tersedia
+            <span className="text-body">diskusi, kolaborasi, dan kesempatan baru</span>. Jangan ragu untuk menghubungi
+            saya pada kontak yang tersedia
           </p>
           <div className="flex flex-col gap-3 pt-2">
             {contacts.map((c) => (
@@ -76,50 +86,64 @@ export default function Contact() {
                 href={c.href}
                 target={c.href.startsWith('http') ? '_blank' : undefined}
                 rel={c.href.startsWith('http') ? 'noreferrer' : undefined}
-                className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-indigo-500/40 hover:bg-white/[0.06]"
+                className="group flex items-center gap-4 rounded-xl border border-hairline bg-surface p-4 transition hover:border-accent-line hover:bg-surface-strong"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-300 transition group-hover:bg-indigo-500/25">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent-strong transition group-hover:bg-accent-soft-hover">
                   {c.icon}
                 </span>
                 <span>
-                  <span className="block font-mono text-[11px] uppercase tracking-wider text-slate-500">
-                    {c.label}
-                  </span>
-                  <span className="block text-sm font-medium text-slate-200 group-hover:text-white">
-                    {c.value}
-                  </span>
+                  <span className="block font-mono text-[11px] uppercase tracking-wider text-faint">{c.label}</span>
+                  <span className="block text-sm font-medium text-body group-hover:text-ink">{c.value}</span>
                 </span>
               </a>
             ))}
             <a
-              href="/cv-aldy-imam-wijaya.pdf"
+              href={asset('cv-aldy-imam-wijaya.pdf')}
               download="Aldy-Imam-Wijaya-CV.pdf"
-              className="group flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-indigo-500/40 hover:bg-white/[0.06]"
+              className="group flex items-center gap-4 rounded-xl border border-hairline bg-surface p-4 transition hover:border-accent-line hover:bg-surface-strong"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-300 transition group-hover:bg-indigo-500/25">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent-strong transition group-hover:bg-accent-soft-hover">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
                   <path d="M12 3v12" />
                   <path d="m7 10 5 5 5-5" />
                   <path d="M5 21h14" />
                 </svg>
               </span>
               <span>
-                <span className="block font-mono text-[11px] uppercase tracking-wider text-slate-500">CV</span>
-                <span className="block text-sm font-medium text-slate-200 group-hover:text-white">Download CV</span>
+                <span className="block font-mono text-[11px] uppercase tracking-wider text-faint">CV</span>
+                <span className="block text-sm font-medium text-body group-hover:text-ink">Download CV</span>
               </span>
             </a>
             <button
               type="button"
               onClick={copyEmail}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-4 text-sm text-slate-300 transition hover:border-indigo-400/50 hover:bg-indigo-500/10 hover:text-white"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-hairline bg-surface px-4 text-sm text-soft transition hover:border-accent-line hover:bg-accent-soft hover:text-ink"
             >
               {copied ? (
                 <>
-                  <span className="text-emerald-400">✓</span> Email disalin
+                  <span className="text-mint">✓</span> Email disalin
                 </>
               ) : (
                 <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
                     <rect x="9" y="9" width="10" height="10" rx="2" />
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                   </svg>
@@ -132,10 +156,12 @@ export default function Contact() {
 
         <figure className="flex items-center justify-center">
           <img
-            src="/me-002.png"
+            src={asset('me-002.webp')}
             alt="Foto Aldy Imam Wijaya"
             loading="lazy"
-            className="w-full max-w-sm rounded-xl border border-white/10 object-cover shadow-xl shadow-slate-950/40"
+            width={800}
+            height={1066}
+            className="w-full max-w-sm rounded-xl border border-hairline object-cover shadow-xl shadow-deep/40"
           />
         </figure>
       </div>

@@ -39,17 +39,17 @@ export default function Skills() {
         {skillGroups.map((group, index) => (
           <Reveal key={group.title} delay={index * 80}>
             <div
-              className={`h-full rounded-xl border bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:bg-white/[0.06] ${
+              className={`h-full rounded-xl border bg-surface p-6 transition hover:-translate-y-1 hover:bg-surface-strong ${
                 group.title === 'AI Assisted'
-                  ? 'border-emerald-400/30 shadow-lg shadow-emerald-950/10 hover:border-emerald-400/55'
-                  : 'border-white/10 hover:border-indigo-500/40'
+                  ? 'border-mint/30 shadow-lg shadow-mint/10 hover:border-mint/55'
+                  : 'border-hairline hover:border-accent-line'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-hairline bg-surface-soft">
                   <TechIcon name={group.icon} size={19} />
                 </span>
-                <h3 className="font-semibold text-white">{group.title}</h3>
+                <h3 className="font-semibold text-ink">{group.title}</h3>
               </div>
               <ul className="mt-4 space-y-2">
                 {group.items.map((item) => (

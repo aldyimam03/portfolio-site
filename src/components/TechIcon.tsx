@@ -1,61 +1,66 @@
-import { useState } from 'react'
+import { TECH_PATHS } from './tech-icons'
 
+/**
+ * Peta nama teknologi -> ikon.
+ * `slug` merujuk ke data path di ./tech-icons.ts (Simple Icons, CC0).
+ * Bila `slug` tidak ada, komponen jatuh ke glyph teks agar tetap ada penanda visual.
+ */
 type IconDefinition = {
-  src?: string
+  slug?: string
   color: string
   glyph: string
 }
 
 const iconDefinitions: Record<string, IconDefinition> = {
-  laravel: { src: 'https://cdn.simpleicons.org/laravel/FF2D20', color: '#FF2D20', glyph: 'L' },
-  php: { src: 'https://cdn.simpleicons.org/php/777BB4', color: '#A5B4FC', glyph: 'PHP' },
-  blade: { src: 'https://cdn.simpleicons.org/laravel/FF2D20', color: '#FF2D20', glyph: 'B' },
-  sqlserver: { src: 'https://cdn.simpleicons.org/microsoftsqlserver/CC2927', color: '#F87171', glyph: 'SQL' },
-  laravelmix: { src: 'https://cdn.simpleicons.org/webpack/8DD6F9', color: '#8DD6F9', glyph: 'M' },
-  laravelexcel: { src: 'https://cdn.simpleicons.org/microsoftexcel/217346', color: '#4ADE80', glyph: 'XLS' },
-  phpspreadsheet: { src: 'https://cdn.simpleicons.org/php/777BB4', color: '#A5B4FC', glyph: 'XLS' },
-  inertiajs: { src: 'https://cdn.simpleicons.org/inertia/9553E9', color: '#9553E9', glyph: 'I' },
-  react: { src: 'https://cdn.simpleicons.org/react/61DAFB', color: '#61DAFB', glyph: 'R' },
-  typescript: { src: 'https://cdn.simpleicons.org/typescript/3178C6', color: '#3178C6', glyph: 'TS' },
-  tailwindcss: { src: 'https://cdn.simpleicons.org/tailwindcss/06B6D4', color: '#06B6D4', glyph: 'TW' },
-  postgresql: { src: 'https://cdn.simpleicons.org/postgresql/4169E1', color: '#4169E1', glyph: 'PG' },
-  redis: { src: 'https://cdn.simpleicons.org/redis/DC382D', color: '#DC382D', glyph: 'R' },
-  docker: { src: 'https://cdn.simpleicons.org/docker/2496ED', color: '#2496ED', glyph: 'D' },
-  laravelsanctum: { src: 'https://cdn.simpleicons.org/laravel/FF2D20', color: '#FF2D20', glyph: 'S' },
-  rabbitmq: { src: 'https://cdn.simpleicons.org/rabbitmq/FF6600', color: '#FF8A3D', glyph: 'MQ' },
-  axios: { src: 'https://cdn.simpleicons.org/axios/5A29E4', color: '#A78BFA', glyph: 'A' },
-  bootstrap: { src: 'https://cdn.simpleicons.org/bootstrap/7952B3', color: '#C4B5FD', glyph: 'B' },
-  scss: { src: 'https://cdn.simpleicons.org/sass/CC6699', color: '#F0A6CA', glyph: 'SCSS' },
-  nodejs: { src: 'https://cdn.simpleicons.org/nodedotjs/339933', color: '#83CD29', glyph: 'JS' },
-  expressjs: { src: 'https://cdn.simpleicons.org/express/D97757', color: '#D97757', glyph: 'Ex' },
-  mysql: { src: 'https://cdn.simpleicons.org/mysql/4479A1', color: '#4479A1', glyph: 'SQL' },
-  jwt: { src: 'https://cdn.simpleicons.org/jsonwebtokens/D97757', color: '#D97757', glyph: 'JWT' },
-  joi: { src: 'https://cdn.simpleicons.org/joi/6B5B95', color: '#BBA7E3', glyph: 'J' },
+  laravel: { slug: 'laravel', color: '#FF2D20', glyph: 'L' },
+  php: { slug: 'php', color: '#777BB4', glyph: 'PHP' },
+  blade: { slug: 'laravel', color: '#FF2D20', glyph: 'B' },
+  sqlserver: { color: '#F87171', glyph: 'SQL' },
+  laravelmix: { slug: 'webpack', color: '#8DD6F9', glyph: 'M' },
+  laravelexcel: { color: '#4ADE80', glyph: 'XLS' },
+  phpspreadsheet: { slug: 'php', color: '#777BB4', glyph: 'XLS' },
+  inertiajs: { slug: 'inertia', color: '#9553E9', glyph: 'I' },
+  react: { slug: 'react', color: '#61DAFB', glyph: 'R' },
+  typescript: { slug: 'typescript', color: '#3178C6', glyph: 'TS' },
+  tailwindcss: { slug: 'tailwindcss', color: '#06B6D4', glyph: 'TW' },
+  postgresql: { slug: 'postgresql', color: '#4169E1', glyph: 'PG' },
+  redis: { slug: 'redis', color: '#DC382D', glyph: 'R' },
+  docker: { slug: 'docker', color: '#2496ED', glyph: 'D' },
+  laravelsanctum: { slug: 'laravel', color: '#FF2D20', glyph: 'S' },
+  rabbitmq: { slug: 'rabbitmq', color: '#FF8A3D', glyph: 'MQ' },
+  axios: { slug: 'axios', color: '#A78BFA', glyph: 'A' },
+  bootstrap: { slug: 'bootstrap', color: '#C4B5FD', glyph: 'B' },
+  scss: { slug: 'sass', color: '#F0A6CA', glyph: 'SCSS' },
+  nodejs: { slug: 'nodedotjs', color: '#83CD29', glyph: 'JS' },
+  expressjs: { slug: 'express', color: '#D97757', glyph: 'Ex' },
+  mysql: { slug: 'mysql', color: '#4479A1', glyph: 'SQL' },
+  jwt: { slug: 'jsonwebtokens', color: '#D97757', glyph: 'JWT' },
+  joi: { color: '#BBA7E3', glyph: 'J' },
   helmet: { color: '#F5C542', glyph: 'H' },
   bcryptjs: { color: '#8B5CF6', glyph: 'B' },
-  sequelize: { src: 'https://cdn.simpleicons.org/sequelize/52B0E7', color: '#52B0E7', glyph: 'S' },
-  sqlite: { src: 'https://cdn.simpleicons.org/sqlite/003B57', color: '#70B7D8', glyph: 'DB' },
-  jest: { src: 'https://cdn.simpleicons.org/jest/C21325', color: '#C21325', glyph: 'J' },
-  jesttesting: { src: 'https://cdn.simpleicons.org/jest/C21325', color: '#C21325', glyph: 'J' },
+  sequelize: { slug: 'sequelize', color: '#52B0E7', glyph: 'S' },
+  sqlite: { slug: 'sqlite', color: '#70B7D8', glyph: 'DB' },
+  jest: { slug: 'jest', color: '#C21325', glyph: 'J' },
+  jesttesting: { slug: 'jest', color: '#C21325', glyph: 'J' },
   joivalidation: { color: '#BBA7E3', glyph: 'J' },
-  sequelizeorm: { src: 'https://cdn.simpleicons.org/sequelize/52B0E7', color: '#52B0E7', glyph: 'S' },
+  sequelizeorm: { slug: 'sequelize', color: '#52B0E7', glyph: 'S' },
   agilephasebaseddelivery: { color: '#34D399', glyph: '↗' },
-  vite: { src: 'https://cdn.simpleicons.org/vite/646CFF', color: '#A78BFA', glyph: 'V' },
-  htmlcss: { src: 'https://cdn.simpleicons.org/html5/E34F26', color: '#E34F26', glyph: '</>' },
+  vite: { slug: 'vite', color: '#A78BFA', glyph: 'V' },
+  htmlcss: { slug: 'html5', color: '#E34F26', glyph: '</>' },
   restapidesign: { color: '#38BDF8', glyph: 'API' },
-  jwtauthentication: { src: 'https://cdn.simpleicons.org/jsonwebtokens/D97757', color: '#D97757', glyph: 'JWT' },
-  github: { src: 'https://cdn.simpleicons.org/github/181717', color: '#51463B', glyph: 'GH' },
-  gitgithub: { src: 'https://cdn.simpleicons.org/github/181717', color: '#51463B', glyph: 'GH' },
+  jwtauthentication: { slug: 'jsonwebtokens', color: '#D97757', glyph: 'JWT' },
+  github: { slug: 'github', color: 'var(--soft)', glyph: 'GH' },
+  gitgithub: { slug: 'github', color: 'var(--soft)', glyph: 'GH' },
   agile: { color: '#34D399', glyph: '↗' },
   frontend: { color: '#E0724E', glyph: '</>' },
   backend: { color: '#FBBF24', glyph: '{}' },
-  database: { src: 'https://cdn.simpleicons.org/mysql/4479A1', color: '#4479A1', glyph: 'DB' },
-  tools: { src: 'https://cdn.simpleicons.org/git/F05032', color: '#F05032', glyph: '⚒' },
-  toolspractices: { src: 'https://cdn.simpleicons.org/git/F05032', color: '#F05032', glyph: '⚒' },
-  ai: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
-  aiassisted: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
-  aiautomation: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
-  aiassisteddevelopment: { src: 'https://cdn.simpleicons.org/claude/D97757', color: '#D97757', glyph: 'AI' },
+  database: { slug: 'mysql', color: '#4479A1', glyph: 'DB' },
+  tools: { slug: 'git', color: '#F05032', glyph: '⚒' },
+  toolspractices: { slug: 'git', color: '#F05032', glyph: '⚒' },
+  ai: { slug: 'claude', color: '#D97757', glyph: 'AI' },
+  aiassisted: { slug: 'claude', color: '#D97757', glyph: 'AI' },
+  aiautomation: { slug: 'claude', color: '#D97757', glyph: 'AI' },
+  aiassisteddevelopment: { slug: 'claude', color: '#D97757', glyph: 'AI' },
   promptengineering: { color: '#A78BFA', glyph: 'P' },
   llmapiintegration: { color: '#38BDF8', glyph: 'LLM' },
   aiworkflowautomation: { color: '#34D399', glyph: '↗' },
@@ -70,7 +75,7 @@ function getDefinition(name: string): IconDefinition {
   const key = normalize(name)
   return (
     iconDefinitions[key] ?? {
-      color: '#94A3B8',
+      color: 'var(--muted)',
       glyph: name.slice(0, 2).toUpperCase(),
     }
   )
@@ -83,8 +88,8 @@ interface TechIconProps {
 }
 
 export function TechIcon({ name, size = 16, className = '' }: TechIconProps) {
-  const [failed, setFailed] = useState(false)
   const definition = getDefinition(name)
+  const path = definition.slug ? TECH_PATHS[definition.slug] : undefined
 
   return (
     <span
@@ -92,22 +97,19 @@ export function TechIcon({ name, size = 16, className = '' }: TechIconProps) {
       className={`inline-flex shrink-0 items-center justify-center ${className}`}
       style={{ width: size, height: size, color: definition.color }}
     >
-      {definition.src && !failed ? (
-        <img
-          src={definition.src}
-          alt=""
+      {path ? (
+        <svg
+          viewBox="0 0 24 24"
+          fill="currentColor"
           width={size}
           height={size}
-          loading="lazy"
-          onError={() => setFailed(true)}
-          referrerPolicy="no-referrer"
-          className="h-full w-full object-contain"
-        />
-      ) : (
-        <span
-          className="font-mono font-bold leading-none"
-          style={{ fontSize: Math.max(8, Math.round(size * 0.48)) }}
+          className="h-full w-full"
+          focusable="false"
         >
+          <path d={path.d} />
+        </svg>
+      ) : (
+        <span className="font-mono font-bold leading-none" style={{ fontSize: Math.max(8, Math.round(size * 0.48)) }}>
           {definition.glyph}
         </span>
       )}
@@ -117,7 +119,7 @@ export function TechIcon({ name, size = 16, className = '' }: TechIconProps) {
 
 export function TechBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[11px] text-slate-300">
+    <span className="inline-flex items-center gap-1.5 rounded border border-hairline bg-surface-soft px-2 py-0.5 font-mono text-[11px] text-soft">
       <TechIcon name={name} size={14} />
       {name}
     </span>

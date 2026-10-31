@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { asset } from '../lib/asset'
 
 const commands = [
   { id: 'beranda', label: 'Buka Beranda', hint: 'Home', keywords: 'home beranda awal', icon: '⌂' },
@@ -60,7 +61,7 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
     changeOpen(false)
     if (id === 'cv') {
       const link = document.createElement('a')
-      link.href = '/cv-aldy-imam-wijaya.pdf'
+      link.href = asset('cv-aldy-imam-wijaya.pdf')
       link.download = 'Aldy-Imam-Wijaya-CV.pdf'
       link.click()
       return
@@ -83,16 +84,30 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-start justify-center px-4 pt-[16vh]" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div
+      className="fixed inset-0 z-[80] flex items-start justify-center px-4 pt-[16vh]"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command palette"
+    >
       <button
         type="button"
         aria-label="Tutup command palette"
         onClick={() => changeOpen(false)}
-        className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay backdrop-blur-sm"
       />
-      <div className="animate-fade-up relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-2xl shadow-black/50">
-        <div className="flex items-center gap-3 border-b border-white/10 px-4">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 text-slate-500">
+      <div className="animate-fade-up relative w-full max-w-lg overflow-hidden rounded-2xl border border-hairline-strong bg-panel shadow-2xl shadow-deep/50">
+        <div className="flex items-center gap-3 border-b border-hairline px-4">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            className="shrink-0 text-faint"
+          >
             <circle cx="11" cy="11" r="7" />
             <path d="m20 20-4-4" />
           </svg>
@@ -103,9 +118,9 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
             onKeyDown={onInputKeyDown}
             placeholder="Cari section..."
             aria-label="Cari perintah"
-            className="h-14 min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-600"
+            className="h-14 min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ghost"
           />
-          <kbd className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">ESC</kbd>
+          <kbd className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] text-faint">ESC</kbd>
         </div>
 
         <div className="max-h-72 overflow-y-auto p-2">
@@ -117,21 +132,23 @@ export default function CommandPalette({ open, onOpenChange }: CommandPalettePro
                 onClick={() => goTo(command.id)}
                 onMouseEnter={() => setSelected(index)}
                 className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition ${
-                  activeSelected === index ? 'bg-indigo-500/15 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                  activeSelected === index
+                    ? 'bg-accent-soft text-ink'
+                    : 'text-muted hover:bg-surface-soft hover:text-ink'
                 }`}
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 bg-white/5 font-mono text-[10px] text-indigo-300">
+                <span className="flex h-8 w-8 items-center justify-center rounded-md border border-hairline bg-surface-soft font-mono text-[10px] text-accent-strong">
                   {command.icon}
                 </span>
                 <span className="flex-1 text-sm">{command.label}</span>
-                <span className="font-mono text-[10px] text-slate-600">{command.hint}</span>
+                <span className="font-mono text-[10px] text-ghost">{command.hint}</span>
               </button>
             ))
           ) : (
-            <p className="px-3 py-8 text-center text-sm text-slate-500">Section tidak ditemukan.</p>
+            <p className="px-3 py-8 text-center text-sm text-faint">Section tidak ditemukan.</p>
           )}
         </div>
-        <div className="flex items-center gap-4 border-t border-white/10 px-4 py-2.5 font-mono text-[10px] text-slate-600">
+        <div className="flex items-center gap-4 border-t border-hairline px-4 py-2.5 font-mono text-[10px] text-ghost">
           <span>↑↓ navigasi</span>
           <span>↵ pilih</span>
           <span className="ml-auto">Ctrl K buka/tutup</span>
